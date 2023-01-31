@@ -75,7 +75,7 @@ class TestComputeMutualClusters(unittest.TestCase):
         _all_nodes = list(_a.index)
         _res0 = compute_mutual_clusters(cluster_labels_df=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
-        _expected0 = {'A0_B3': {0}, 'A1_B4': {1}, 'A2_B5': {2}}
+        _expected0 = {"A0_B3": {0}, "A1_B4": {1}, "A2_B5": {2}}
 
         self.assertIsInstance(
             _res0,
@@ -111,7 +111,7 @@ class TestComputeMutualClusters(unittest.TestCase):
         _all_nodes = list(_a.index)
         _res0 = compute_mutual_clusters(cluster_labels_df=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
-        _expected0 = {'A0_B0': {0, 1}, 'A2_B2': {2, 3}}
+        _expected0 = {"A0_B0": {0, 1}, "A2_B2": {2, 3}}
 
         self.assertIsInstance(
             _res0,
@@ -147,7 +147,7 @@ class TestComputeMutualClusters(unittest.TestCase):
         _all_nodes = list(_a.index)
         _res0 = compute_mutual_clusters(cluster_labels_df=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
-        _expected0 = {'A3_B0': {0, 1}, 'A3_B2': {2, 3}}
+        _expected0 = {"A3_B0": {0, 1}, "A3_B2": {2, 3}}
 
         self.assertIsInstance(
             _res0,
@@ -183,7 +183,7 @@ class TestComputeMutualClusters(unittest.TestCase):
         _all_nodes = list(_a.index)
         _res0 = compute_mutual_clusters(cluster_labels_df=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
-        _expected0 = {'A0_B0_C0': {0, 1}, 'A2_B2_C2': {2, 3}}
+        _expected0 = {"A0_B0_C0": {0, 1}, "A2_B2_C2": {2, 3}}
 
         self.assertIsInstance(
             _res0,
@@ -219,7 +219,12 @@ class TestComputeMutualClusters(unittest.TestCase):
         _all_nodes = list(_a.index)
         _res0 = compute_mutual_clusters(cluster_labels_df=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
-        _expected0 = {'A0_B0_C1': {0}, 'A0_B1_C0': {1}, 'A1_B0_C1': {2}, 'A1_B1_C0': {3}}
+        _expected0 = {
+            "A0_B0_C1": {0},
+            "A0_B1_C0": {1},
+            "A1_B0_C1": {2},
+            "A1_B1_C0": {3},
+        }
 
         self.assertIsInstance(
             _res0,
@@ -255,7 +260,7 @@ class TestComputeMutualClusters(unittest.TestCase):
         _all_nodes = list(_a.index)
         _res0 = compute_mutual_clusters(cluster_labels_df=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
-        _expected0 = {'A0_B1_C0': {0, 1}, 'A1_B0_C1': {2}, 'A1_B1_C0': {3}}
+        _expected0 = {"A0_B1_C0": {0, 1}, "A1_B0_C1": {2}, "A1_B1_C0": {3}}
 
         self.assertIsInstance(
             _res0,
