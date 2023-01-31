@@ -8,7 +8,7 @@ def compute_mutual_clusters(
     Recursive function that traverses all the layers and builds the mutual clusters
     :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
-    :param mutual_clusters: dict[str, set], a dictionary of mutual cluaster label (str) -> mutual cluster members (set)
+    :param mutual_clusters: dict[str, set], a dictionary of mutual cluster label (str) -> mutual cluster members (set)
         The mutual cluster labels are built at each step by combining the labels of the clusters that are intersected.
         Default: empty dictionary
     :param next_layer_idx: int, the index of next layer to consider
