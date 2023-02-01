@@ -48,7 +48,8 @@ def compute_maximal_alignment_curve(cluster_labels_df: pd.DataFrame) -> dict:
             l_comb_df = cluster_labels_df[l_comb]
             mutual_clusters = compute_mutual_clusters(l_comb_df)
             mutual_clusters_labels = get_mutual_clusters_labels(mutual_clusters)
-            labels_list = mutual_clusters_labels.set_index("id").iloc[l_comb_df.index]
+            labels_list = mutual_clusters_labels.set_index("id").iloc[l_comb_df.index]["label"].values
+
             # CRITERIA
             nmi = compute_multilayer_alignment_score(l_comb_df, labels_list)
 
