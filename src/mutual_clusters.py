@@ -1,6 +1,20 @@
 import pandas as pd
 
 
+def get_mutual_clusters_labels(mutual_clusters: dict) -> pd.DataFrame:
+    """
+    :param mutual_clusters: a dictionary of mutual cluster label (str) -> mutual cluster members (set)
+    :return: pd.DataFrame with column 'id' for the element id and column 'label' for the element label
+    """
+    nodes_id = []
+    labels = []
+    for k, v in mutual_clusters.items():
+        for elm in v:
+            nodes_id.append(elm)
+            labels.append(k)
+    return pd.DataFrame({"id": nodes_id, "label": labels})
+
+
 def compute_mutual_clusters(
     cluster_labels_df: pd.DataFrame, mutual_clusters: dict = {}, next_layer_idx: int = 0
 ) -> dict:
@@ -35,7 +49,7 @@ def compute_mutual_clusters(
     _num_of_layers = len(cluster_labels_df.columns)
     # recursion base case: no layer left to be processed
     if next_layer_idx == _num_of_layers:
-        # # TODO: is the chunck below ever needed?
+        # # TODO: is the chunk below ever needed?
         # # at this point, we have lost all the nodes that do not belong to any mutual cluster
         # # therefore, we need to add them back as singletons
         # _updated_mutual_clusters = {}
