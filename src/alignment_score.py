@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.metrics.cluster import normalized_mutual_info_score
 
 from src.mutual_clusters import compute_mutual_clusters
+from src.mutual_clusters import get_mutual_clusters_labels
 
 
 def compute_multilayer_alignment_score(
@@ -46,11 +47,10 @@ def compute_maximal_alignment_curve(cluster_labels_df: pd.DataFrame) -> dict:
             l_comb = list(l_comb)
             l_comb_df = cluster_labels_df[l_comb]
             mutual_clusters = compute_mutual_clusters(l_comb_df)
-            # TODO
-            # mutual_clusters_labels = raise NotImplementedError()
-
+            mutual_clusters_labels = get_mutual_clusters_labels(mutual_clusters)
+            labels_list = mutual_clusters_labels.set_index("id").iloc[l_comb_df.index]
             # CRITERIA
-            nmi = compute_multilayer_alignment_score(l_comb_df, mutual_clusters_labels)
+            nmi = compute_multilayer_alignment_score(l_comb_df, labels_list)
 
             if nmi > best_nmi:
                 best_nmi = nmi
