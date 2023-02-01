@@ -21,10 +21,26 @@ class TestComputeMultilayerAlignmentScore(unittest.TestCase):
         _a = pd.DataFrame({"A": [0, 1, 2]})
         _labels = ["a", "b", "c"]
         _res0 = compute_multilayer_alignment_score(_a, _labels)
-        self.assertIsInstance(_res0, float, f"""compute_multilayer_alignment_score should return a float, but returned {type(_res0)}""")
-        self.assertGreaterEqual(_res0, 0.0, f"""compute_multilayer_alignment_score should return the correct value of avg NMI""")
-        self.assertLessEqual(_res0, 1.0, f"""compute_multilayer_alignment_score should return the correct value of avg NMI""")
-        self.assertEqual(_res0, 1.0, f"""compute_multilayer_alignment_score should return the correct value of avg NMI""")
+        self.assertIsInstance(
+            _res0,
+            float,
+            f"""compute_multilayer_alignment_score should return a float, but returned {type(_res0)}""",
+        )
+        self.assertGreaterEqual(
+            _res0,
+            0.0,
+            f"""compute_multilayer_alignment_score should return the correct value of avg NMI""",
+        )
+        self.assertLessEqual(
+            _res0,
+            1.0,
+            f"""compute_multilayer_alignment_score should return the correct value of avg NMI""",
+        )
+        self.assertEqual(
+            _res0,
+            1.0,
+            f"""compute_multilayer_alignment_score should return the correct value of avg NMI""",
+        )
 
 
 if __name__ == "__main__":
