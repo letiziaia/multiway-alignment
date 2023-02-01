@@ -19,7 +19,7 @@ class TestGetMutualClustersLabels(unittest.TestCase):
         get_mutual_clusters_labels returns a pd.DataFrame
         """
         _a = pd.DataFrame()
-        _res0 = get_mutual_clusters_labels({})
+        _res0 = get_mutual_clusters_labels(_a)
         self.assertIsInstance(
             _res0,
             pd.DataFrame,
@@ -43,7 +43,7 @@ class TestGetMutualClustersLabels(unittest.TestCase):
         )
         self.assertFalse(
             _res0.empty,
-            f"""get_mutual_clusters_labels called on non-empty dictionary should return a non-empty pd.DataFrame, 
+            f"""get_mutual_clusters_labels called on non-empty dictionary should return a non-empty pd.DataFrame,
             but returned {_res0}""",
         )
 
