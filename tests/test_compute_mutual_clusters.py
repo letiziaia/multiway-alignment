@@ -28,7 +28,8 @@ class TestComputeMutualClusters(unittest.TestCase):
         self.assertEqual(
             _res0,
             dict(),
-            f"""compute_mutual_clusters called on empty dataframe should return an empty dictionary, but returned {_res0}""",
+            f"""compute_mutual_clusters called on empty dataframe should return an empty dictionary,
+            but returned {_res0}""",
         )
 
     def test_on_one_layer(self):
@@ -50,21 +51,21 @@ class TestComputeMutualClusters(unittest.TestCase):
         self.assertNotEqual(
             _res0,
             dict(),
-            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary, 
+            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary,
             but returned {_res0}""",
         )
 
         self.assertDictEqual(
             _res0,
             _expected0,
-            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty 
-            dictionary, but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return
+            the expected non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertSetEqual(
             set(_all_nodes),
             set(_returned_nodes),
-            f"""compute_mutual_clusters called on non-empty dataframe should return all nodes""",
+            """compute_mutual_clusters called on non-empty dataframe should return all nodes""",
         )
 
     def test_on_two_layers_0(self):
@@ -86,21 +87,21 @@ class TestComputeMutualClusters(unittest.TestCase):
         self.assertNotEqual(
             _res0,
             dict(),
-            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary, 
-            but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return a
+            non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertDictEqual(
             _res0,
             _expected0,
-            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty 
+            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty
             dictionary, but returned {_res0}""",
         )
 
         self.assertSetEqual(
             set(_all_nodes),
             set(_returned_nodes),
-            f"""compute_mutual_clusters called on non-empty dataframe should return all nodes""",
+            """compute_mutual_clusters called on non-empty dataframe should return all nodes""",
         )
 
     def test_on_two_layers_1(self):
@@ -122,21 +123,21 @@ class TestComputeMutualClusters(unittest.TestCase):
         self.assertNotEqual(
             _res0,
             dict(),
-            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary, 
-            but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return a
+            non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertDictEqual(
             _res0,
             _expected0,
-            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty 
-            dictionary, but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return
+            the expected non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertSetEqual(
             set(_all_nodes),
             set(_returned_nodes),
-            f"""compute_mutual_clusters called on non-empty dataframe should return all nodes""",
+            """compute_mutual_clusters called on non-empty dataframe should return all nodes""",
         )
 
     def test_on_two_layers_2(self):
@@ -158,21 +159,21 @@ class TestComputeMutualClusters(unittest.TestCase):
         self.assertNotEqual(
             _res0,
             dict(),
-            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary, 
-            but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return a
+            non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertDictEqual(
             _res0,
             _expected0,
-            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty 
-            dictionary, but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return
+            the expected non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertSetEqual(
             set(_all_nodes),
             set(_returned_nodes),
-            f"""compute_mutual_clusters called on non-empty dataframe should return all nodes""",
+            """compute_mutual_clusters called on non-empty dataframe should return all nodes""",
         )
 
     def test_on_three_layers_0(self):
@@ -194,21 +195,21 @@ class TestComputeMutualClusters(unittest.TestCase):
         self.assertNotEqual(
             _res0,
             dict(),
-            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary, 
-            but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return a
+            non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertDictEqual(
             _res0,
             _expected0,
-            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty 
-            dictionary, but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return
+            the expected non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertSetEqual(
             set(_all_nodes),
             set(_returned_nodes),
-            f"""compute_mutual_clusters called on non-empty dataframe should return all nodes""",
+            """compute_mutual_clusters called on non-empty dataframe should return all nodes""",
         )
 
     def test_on_three_layers_1(self):
@@ -235,21 +236,21 @@ class TestComputeMutualClusters(unittest.TestCase):
         self.assertNotEqual(
             _res0,
             dict(),
-            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary, 
+            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary,
             but returned {_res0}""",
         )
 
         self.assertDictEqual(
             _res0,
             _expected0,
-            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty 
-            dictionary, but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return
+            the expected non-empty dictionary, but returned {_res0}""",
         )
 
         self.assertSetEqual(
             set(_all_nodes),
             set(_returned_nodes),
-            f"""compute_mutual_clusters called on non-empty dataframe should return all nodes""",
+            """compute_mutual_clusters called on non-empty dataframe should return all nodes""",
         )
 
     def test_on_three_layers_2(self):
@@ -271,21 +272,21 @@ class TestComputeMutualClusters(unittest.TestCase):
         self.assertNotEqual(
             _res0,
             dict(),
-            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary, 
+            f"""compute_mutual_clusters called on non-empty dataframe should return a non-empty dictionary,
             but returned {_res0}""",
         )
 
         self.assertDictEqual(
             _res0,
             _expected0,
-            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty 
-            dictionary, but returned {_res0}""",
+            f"""compute_mutual_clusters called on non-empty dataframe should return the expected non-empty
+                dictionary, but returned {_res0}""",
         )
 
         self.assertSetEqual(
             set(_all_nodes),
             set(_returned_nodes),
-            f"""compute_mutual_clusters called on non-empty dataframe should return all nodes""",
+            """compute_mutual_clusters called on non-empty dataframe should return all nodes""",
         )
 
 

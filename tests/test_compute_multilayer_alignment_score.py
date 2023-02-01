@@ -29,17 +29,17 @@ class TestComputeMultilayerAlignmentScore(unittest.TestCase):
         self.assertGreaterEqual(
             _res0,
             0.0,
-            f"""compute_multilayer_alignment_score should return the correct value of avg NMI""",
+            """compute_multilayer_alignment_score should return the correct value of avg NMI""",
         )
         self.assertLessEqual(
             _res0,
             1.0,
-            f"""compute_multilayer_alignment_score should return the correct value of avg NMI""",
+            """compute_multilayer_alignment_score should return the correct value of avg NMI""",
         )
         self.assertEqual(
             _res0,
             1.0,
-            f"""compute_multilayer_alignment_score should return the correct value of avg NMI""",
+            """compute_multilayer_alignment_score should return the correct value of avg NMI""",
         )
 
 
