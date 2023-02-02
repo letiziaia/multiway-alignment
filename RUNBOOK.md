@@ -12,10 +12,10 @@ to N-wise case.
 
 ```shell
 # install environment
-pipenv install --dev
+$ pipenv install --dev
 
 # activate the environment
-pipenv shell
+$ pipenv shell
 ```
 
 ### Given partitions for each of the layers, compute mutual clusters

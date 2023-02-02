@@ -10,9 +10,11 @@ You can refer to the [slide deck](https://docs.google.com/presentation/d/1HMEE5k
 
 ## Setting up
 
+![python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
+
 You should have python 3.10 and [pipenv](https://github.com/pypa/pipenv#installation) installed.
 
-```
+```shell
 # install dependencies (including dev)
 $ pipenv install -d
 
