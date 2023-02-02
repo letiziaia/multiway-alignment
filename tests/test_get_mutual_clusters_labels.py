@@ -23,11 +23,13 @@ class TestGetMutualClustersLabels(unittest.TestCase):
         self.assertIsInstance(
             _res0,
             pd.DataFrame,
-            f"""get_mutual_clusters_labels should return a pd.DataFrame, but returned {type(_res0)}""",
+            f"""get_mutual_clusters_labels should return a pd.DataFrame,
+            but returned {type(_res0)}""",
         )
         self.assertTrue(
             _res0.empty,
-            f"""get_mutual_clusters_labels called on empty dictionary should return an empty pd.DataFrame, but returned {_res0}""",
+            f"""get_mutual_clusters_labels called on empty dictionary should return
+            an empty pd.DataFrame, but returned {_res0}""",
         )
 
     def test_on_simple_sets(self):
@@ -39,12 +41,13 @@ class TestGetMutualClustersLabels(unittest.TestCase):
         self.assertIsInstance(
             _res0,
             pd.DataFrame,
-            f"""get_mutual_clusters_labels should return a pd.DataFrame, but returned {type(_res0)}""",
+            f"""get_mutual_clusters_labels should return a pd.DataFrame,
+            but returned {type(_res0)}""",
         )
         self.assertFalse(
             _res0.empty,
-            f"""get_mutual_clusters_labels called on non-empty dictionary should return a non-empty pd.DataFrame,
-            but returned {_res0}""",
+            f"""get_mutual_clusters_labels called on non-empty dictionary should return
+            a non-empty pd.DataFrame, but returned {_res0}""",
         )
 
 
