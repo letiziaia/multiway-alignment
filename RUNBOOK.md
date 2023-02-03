@@ -18,6 +18,14 @@ $ pipenv install --dev
 $ pipenv shell
 ```
 
+### Run all tests
+
+From root directory,
+
+```shell
+$ python -m unittest discover -v
+````
+
 ### Given partitions for each of the layers, compute mutual clusters
 
 ```python
