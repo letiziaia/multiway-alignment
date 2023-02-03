@@ -6,6 +6,8 @@ from sklearn.metrics.cluster import normalized_mutual_info_score
 from src.mutual_clusters import compute_mutual_clusters
 from src.mutual_clusters import get_mutual_clusters_labels
 
+from src.common.logging import logger
+
 
 def compute_multilayer_alignment_score(
     cluster_labels_df: pd.DataFrame, mutual_clusters_labels: list
@@ -36,6 +38,7 @@ def compute_maximal_alignment_curve(cluster_labels_df: pd.DataFrame) -> dict:
     best_by_combination_size = dict()
     _num_of_layers = len(cluster_labels_df.columns)
     for length in range(1, _num_of_layers + 1):
+        logger.info(f"combinations of size {length}")
         # Get all combinations of cluster_labels_df.columns of length "length"
         _columns_combinations = combinations(cluster_labels_df.columns, length)
 
@@ -67,6 +70,9 @@ def compute_maximal_alignment_curve(cluster_labels_df: pd.DataFrame) -> dict:
             best_nmi,
             best_layers_combination,
             best_layers_combination_mutual_communities,
+        )
+        logger.info(
+            f"{length}-combination with highest score {best_nmi}: {best_layers_combination}"
         )
 
     return best_by_combination_size
