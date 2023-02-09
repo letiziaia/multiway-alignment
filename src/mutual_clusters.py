@@ -15,6 +15,44 @@ def get_mutual_clusters_labels(mutual_clusters: dict) -> pd.DataFrame:
     return pd.DataFrame({"id": nodes_id, "label": labels})
 
 
+def compute_mutual_clusters(
+    cluster_labels_df: pd.DataFrame
+) -> dict:
+    """
+    Returns the mutual clusters (faster)
+    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+        where each element a_ij is an integer representing the cluster labels for node i at layer j
+        and columns names are the layers names
+    :return: current_sets, dict[str, set], a dictionary of mutual cluster label (str) -> mutual cluster members (set)
+        Note: Only non-empty sets are returned!
+    ------------
+    Example
+    ------------
+    E.g.:
+        cluster_labels_df:      A | B | C
+                                ---------
+                             0  0   1   0
+                             1  0   1   0
+                             2  1   0   1
+        mutual_clusters:
+            A0_B0_C0 -> {}, A0_B0_C1 -> {}, A0_B1_C0 -> {0, 1}, A0_B1_C1 -> {},
+            A1_B0_C0 -> {}, A1_B0_C1 -> {2}, A1_B1_C0 -> {}, A1_B1_C1 -> {}
+    >>> df = pd.DataFrame({"A": [0, 0, 1], "B": [1, 1, 0], "C": [0, 0, 1]})
+    >>> compute_mutual_clusters(cluster_labels_df=df)
+    """
+    mutual_clusters = {}
+    _layers = list(cluster_labels_df.columns)
+    _mc = cluster_labels_df.groupby(by=_layers).groups
+    for key, value in _mc.items():
+        if len(_layers) == 1:
+            _formatted_key = f"{_layers[0]}{key}"
+        else:
+            _joined_key = ["".join((str(col_name), str(label))) for col_name, label in zip(_layers, key)]
+            _formatted_key = "_".join(_joined_key)
+        mutual_clusters[_formatted_key] = set(value)
+    return mutual_clusters
+
+
 def compute_mutual_clusters_recursive(
     cluster_labels_df: pd.DataFrame, mutual_clusters: dict = {}, next_layer_idx: int = 0
 ) -> dict:
