@@ -1,6 +1,5 @@
 from itertools import combinations
 import pandas as pd
-import numpy as np
 from sklearn.metrics.cluster import normalized_mutual_info_score
 
 from src.mutual_clusters import compute_mutual_clusters
