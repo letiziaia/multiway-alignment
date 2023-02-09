@@ -15,7 +15,7 @@ def get_mutual_clusters_labels(mutual_clusters: dict) -> pd.DataFrame:
     return pd.DataFrame({"id": nodes_id, "label": labels})
 
 
-def compute_mutual_clusters(
+def compute_mutual_clusters_recursive(
     cluster_labels_df: pd.DataFrame, mutual_clusters: dict = {}, next_layer_idx: int = 0
 ) -> dict:
     """
@@ -44,26 +44,11 @@ def compute_mutual_clusters(
             A0_B0_C0 -> {}, A0_B0_C1 -> {}, A0_B1_C0 -> {0, 1}, A0_B1_C1 -> {},
             A1_B0_C0 -> {}, A1_B0_C1 -> {2}, A1_B1_C0 -> {}, A1_B1_C1 -> {}
     >>> df = pd.DataFrame({"A": [0, 0, 1], "B": [1, 1, 0], "C": [0, 0, 1]})
-    >>> compute_mutual_clusters(cluster_labels_df=df)
+    >>> compute_mutual_clusters_recursive(cluster_labels_df=df)
     """
     _num_of_layers = len(cluster_labels_df.columns)
     # recursion base case: no layer left to be processed
     if next_layer_idx == _num_of_layers:
-        # # TODO: is the chunk below ever needed?
-        # # at this point, we have lost all the nodes that do not belong to any mutual cluster
-        # # therefore, we need to add them back as singletons
-        # _updated_mutual_clusters = {}
-        # _all_nodes = list(cluster_labels_df.index)
-        # for n in _all_nodes:
-        #     _found = False
-        #     _singleton_key = "s" + str(n)
-        #     for mc in mutual_clusters.values():
-        #         if n in mc:
-        #             _found = True
-        #     if not _found:
-        #         _updated_mutual_clusters[_singleton_key] = {n}
-        # _updated_mutual_clusters.update(mutual_clusters)
-        # return _updated_mutual_clusters
         return mutual_clusters
     else:
         _next_layer = cluster_labels_df.columns[next_layer_idx]
@@ -76,7 +61,7 @@ def compute_mutual_clusters(
                 ][_next_layer].index
                 _key = str(_next_layer) + str(_cluster_label)
                 _updated_mutual_clusters[_key] = set(_cluster_content)
-            return compute_mutual_clusters(
+            return compute_mutual_clusters_recursive(
                 cluster_labels_df, _updated_mutual_clusters, next_layer_idx + 1
             )
         else:
@@ -92,6 +77,6 @@ def compute_mutual_clusters(
                     _new_set = curr_mc.intersection(set(_cluster_content))
                     if len(_new_set) > 0:
                         _updated_mutual_clusters[_key] = _new_set
-            return compute_mutual_clusters(
+            return compute_mutual_clusters_recursive(
                 cluster_labels_df, _updated_mutual_clusters, next_layer_idx + 1
             )

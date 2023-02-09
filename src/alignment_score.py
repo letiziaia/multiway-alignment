@@ -2,7 +2,7 @@ from itertools import combinations
 import pandas as pd
 from sklearn.metrics.cluster import normalized_mutual_info_score
 
-from src.mutual_clusters import compute_mutual_clusters
+from src.mutual_clusters import compute_mutual_clusters_recursive
 from src.mutual_clusters import get_mutual_clusters_labels
 
 from src.common.logging import logger
@@ -22,7 +22,7 @@ def compute_multilayer_alignment_score(
         _layer = cluster_labels_df[layer_id].values
         _score = normalized_mutual_info_score(_layer, mutual_clusters_labels)
         avg_nmi += _score
-    return avg_nmi/len(cluster_labels_df.columns)
+    return avg_nmi / len(cluster_labels_df.columns)
 
 
 def compute_maximal_alignment_curve(cluster_labels_df: pd.DataFrame) -> dict:
@@ -48,7 +48,7 @@ def compute_maximal_alignment_curve(cluster_labels_df: pd.DataFrame) -> dict:
         for l_comb in _columns_combinations:
             l_comb = list(l_comb)
             l_comb_df = cluster_labels_df[l_comb]
-            mutual_clusters = compute_mutual_clusters(l_comb_df)
+            mutual_clusters = compute_mutual_clusters_recursive(l_comb_df)
             mutual_clusters_labels = get_mutual_clusters_labels(mutual_clusters)
             labels_list = (
                 mutual_clusters_labels.set_index("id")

@@ -30,11 +30,11 @@ $ python -m unittest discover -v
 
 ```python
 # import needed modules
->>> import pandas as pd
->>> from src.mutual_clusters import compute_mutual_clusters
+>> > import pandas as pd
+>> > from src.mutual_clusters import compute_mutual_clusters_recursive
 
 # load the partitions labels to a pandas DataFrame
->>> df = pd.DataFrame(
+>> > df = pd.DataFrame(
     {
         # in layer A, nodes 0 and 1 have label 0,
         # nodes 2 and 3 have label 1
@@ -42,10 +42,10 @@ $ python -m unittest discover -v
         "B": [0, 1, 0, 1],
         "C": [1, 0, 1, 0]
     }
-   )
+)
 
 # get mutual clusters
->>> compute_mutual_clusters(cluster_labels_df=df)
+>> > compute_mutual_clusters_recursive(cluster_labels_df=df)
 {
     "A0_B0_C1": {0},
     "A0_B1_C0": {1},
