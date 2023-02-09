@@ -15,9 +15,7 @@ def get_mutual_clusters_labels(mutual_clusters: dict) -> pd.DataFrame:
     return pd.DataFrame({"id": nodes_id, "label": labels})
 
 
-def compute_mutual_clusters(
-    cluster_labels_df: pd.DataFrame
-) -> dict:
+def compute_mutual_clusters(cluster_labels_df: pd.DataFrame) -> dict:
     """
     Returns the mutual clusters (faster)
     :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
@@ -47,7 +45,10 @@ def compute_mutual_clusters(
         if len(_layers) == 1:
             _formatted_key = f"{_layers[0]}{key}"
         else:
-            _joined_key = ["".join((str(col_name), str(label))) for col_name, label in zip(_layers, key)]
+            _joined_key = [
+                "".join((str(col_name), str(label)))
+                for col_name, label in zip(_layers, key)
+            ]
             _formatted_key = "_".join(_joined_key)
         mutual_clusters[_formatted_key] = set(value)
     return mutual_clusters
