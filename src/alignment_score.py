@@ -23,7 +23,7 @@ def compute_multilayer_alignment_score(
         _layer = cluster_labels_df[layer_id].values
         _score = normalized_mutual_info_score(_layer, mutual_clusters_labels)
         avg_nmi += _score
-    return np.mean(avg_nmi)
+    return avg_nmi/len(cluster_labels_df.columns)
 
 
 def compute_maximal_alignment_curve(cluster_labels_df: pd.DataFrame) -> dict:
