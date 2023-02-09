@@ -20,7 +20,9 @@ def compute_multilayer_alignment_score(
     avg_nmi = 0
     for layer_id in cluster_labels_df.columns:
         _layer = cluster_labels_df[layer_id].values
-        _score = normalized_mutual_info_score(_layer, mutual_clusters_labels)
+        _score = normalized_mutual_info_score(
+            _layer, mutual_clusters_labels, average_method="arithmetic"
+        )
         avg_nmi += _score
     return avg_nmi / len(cluster_labels_df.columns)
 
