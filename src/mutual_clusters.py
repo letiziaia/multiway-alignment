@@ -12,7 +12,7 @@ def get_mutual_clusters_labels(mutual_clusters: dict) -> pd.DataFrame:
         for elm in v:
             nodes_id.append(elm)
             labels.append(k)
-    return pd.DataFrame({"id": nodes_id, "label": labels})
+    return pd.DataFrame({"id": nodes_id, "label": labels}).sort_values(by="id")
 
 
 def compute_mutual_clusters(cluster_labels_df: pd.DataFrame) -> dict:
