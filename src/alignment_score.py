@@ -30,7 +30,8 @@ def _compute_layer_expectation(
             scoring_function, [np.random.permutation(layer) for _ in range(10)]
         )
         for value in result.get():
-            _all_scores.append(value)
+            # NOTE: assuming scores are always >=0
+            _all_scores.append(max(value, 0))
     return np.array(_all_scores).mean()
 
 
