@@ -4,14 +4,22 @@ import matplotlib.pyplot as plt
 from src.alignment_score import compute_maximal_alignment_curve
 
 
-def plot_maximal_alignment_curve(cluster_labels_df: pd.DataFrame) -> plt.Figure:
+def plot_maximal_alignment_curve(
+    cluster_labels_df: pd.DataFrame,
+    which_score: str = "nmi",
+    adjusted: bool = False,
+) -> plt.Figure:
     """
     :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
         and column names are layers names
+    :param which_score: str, one of "nmi" or "ami"
+    :param adjusted: bool, default: False
     :return: plt.Figure with 2 subplots (1 row x 2 columns)
     """
-    res = compute_maximal_alignment_curve(cluster_labels_df=cluster_labels_df)
+    res = compute_maximal_alignment_curve(
+        cluster_labels_df=cluster_labels_df, which_score=which_score, adjusted=adjusted
+    )
     combination_sizes = []
     anmi_scores = []
     communities_idx = []
