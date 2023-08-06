@@ -34,7 +34,7 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
         self.assertIsInstance(
             _res0,
             dict,
-            f"""compute_maximal_alignment_curve should return a tuple with two dictionaries, but one was {type(_res0)}""", 
+            f"""compute_maximal_alignment_curve should return a tuple with two dictionaries, but one was {type(_res0)}""",
         )
         self.assertDictEqual(
             _res0,
@@ -57,7 +57,7 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
         self.assertIsInstance(
             _res0,
             dict,
-            f"""compute_maximal_alignment_curve should return a tuple with two dictionaries, but one was {type(_res0)}""", 
+            f"""compute_maximal_alignment_curve should return a tuple with two dictionaries, but one was {type(_res0)}""",
         )
 
 
