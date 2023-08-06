@@ -1,10 +1,15 @@
 import pandas as pd
+import numpy as np
 from joblib import load
 import matplotlib.pyplot as plt
 import matplotlib.markers as markers
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+import random
+import seaborn as sns
 import typing
 
 from src.alignment_score import compute_maximal_alignment_curve
+from src.null_models import expected_curve_equal_sized_clusters
 from src.common.logging import logger
 
 
@@ -108,7 +113,7 @@ def plot_full_alignment_curve(
     # Annotate each point with its label
     for i, label in top[[2]].iterrows():
         label = label[2]
-        text = [l.replace("_", " ") for l in label]
+        text = [lab.replace("_", " ") for lab in label]
         text = "\n".join(text)
         plt.annotate(
             text,
@@ -117,7 +122,6 @@ def plot_full_alignment_curve(
             xytext=(0, 10),
             ha="left",
             fontsize=11,
-            # bbox=dict(boxstyle='round,pad=0.2', fc='yellow', alpha=0.5)
         )
     plt.scatter(
         x,
@@ -136,4 +140,147 @@ def plot_full_alignment_curve(
     plt.ylabel("maximal alignment score")
     plt.ylim(0, 1.0)
     plt.tight_layout()
+    return fig
+
+
+def plot_full_alignment_with_null_models(
+    full_result: str, full_null_path: str
+) -> plt.Figure:
+    r = load(full_result)
+    points = [(k.split("+")[0], v[0], k.split("+")[1:]) for k, v in r.items()]
+    points = pd.DataFrame(points)
+
+    points_df = []
+    for i in range(10):
+        r = load(f"{full_null_path}/null_{i}")
+        _points = [(k.split("+")[0], v[0], k.split("+")[1:]) for k, v in r.items()]
+        points_df.append(pd.DataFrame(_points))
+
+    points_df = pd.concat(points_df, ignore_index=True)
+
+    top = points.sort_values(by=[1, 0], ascending=False).groupby(0).head(1)
+    x_top = top[0]
+    x_top = [int(v) for v in x_top]
+    y_top = top[1]
+
+    _strip = points[~points.index.isin(top.index)]
+
+    null_avg = points_df.groupby(0)[1].mean().to_dict()
+    y_top_ = y_top.values - np.array([null_avg[k] for k in null_avg.keys()])
+
+    null_upper_q = points_df.groupby(0)[1].quantile(q=0.975).to_dict()
+    null_lower_q = points_df.groupby(0)[1].quantile(q=0.025).to_dict()
+    sig = [
+        (_i, v - null_avg[_i])
+        for _i, v in _strip[[0, 1]].values
+        if v > null_upper_q[_i] or v < null_lower_q[_i]
+    ]
+    not_sig = [
+        (_i, v - null_avg[_i])
+        for _i, v in _strip[[0, 1]].values
+        if null_lower_q[_i] <= v <= null_upper_q[_i]
+    ]
+
+    fig, ax = plt.subplots(1, 1, figsize=(20, 10))
+    maxim = ax.scatter(
+        x_top,
+        y_top_,
+        marker="s",
+        linestyle=":",
+        color="blue",
+        alpha=1.0,
+    )
+    # Annotate each point with its label
+    for j, (i, label) in enumerate(top[[2]].iterrows()):
+        label = label[2]
+        text = [lab.replace("_", " ") for lab in label]
+        text = "\n".join(text)
+        ax.annotate(
+            text,
+            (x_top[j], y_top_[j]),
+            textcoords="offset points",
+            xytext=(0, 10),
+            ha="left",
+            fontsize=14,
+        )
+    _sig = pd.DataFrame(sig)
+    _sig["jit"] = [
+        int(v) + (random.random() / 10) * ((-1) ** (i + 1))
+        for i, v in enumerate(_sig[0].values)
+    ]
+    _not_sig = pd.DataFrame(not_sig)
+    _not_sig["jit"] = [
+        int(v) + (random.random() / 10) * ((-1) ** (i + 1))
+        for i, v in enumerate(_not_sig[0].values)
+    ]
+    first = ax.scatter(
+        _sig["jit"], _sig[1], marker="o", color="red", alpha=0.7, label="significant"
+    )
+    second = ax.scatter(
+        _not_sig["jit"],
+        _not_sig[1],
+        marker=markers.MarkerStyle(marker="o", fillstyle="none"),
+        color="blueviolet",
+        alpha=0.7,
+        label="explained by null model",
+    )
+
+    # Remove the left and top spines
+    plt.gca().spines["right"].set_visible(False)
+    plt.gca().spines["top"].set_visible(False)
+
+    # change the fontsize
+    ax.tick_params(axis="x", labelsize=18)
+    ax.tick_params(axis="y", labelsize=18)
+
+    plt.xlabel("number of layers", fontsize=18)
+    plt.ylabel(r"$A - <A_{null}>$", fontsize=18)
+
+    # Create an inset in the lower right corner (loc=4) with borderpad=1, i.e.
+    # borderpad 1 = 10 points padding (as 10pt is the default fontsize) to the parent axes
+    axins = inset_axes(
+        ax,
+        width="35%",
+        height="35%",
+        loc=4,
+        borderpad=4,
+    )
+    axins.plot(
+        x_top,
+        y_top,
+        marker="s",
+        linestyle=":",
+        color="blue",
+        alpha=1.0,
+    )
+    sns.lineplot(
+        data=points_df,
+        x=points_df[0].astype(int),
+        y=1,
+        estimator="mean",
+        errorbar=("ci", 95),
+        n_boot=1000,
+        color="black",
+        markers="o",
+        label=r"null model (95$\%$ c.i.)",
+        ax=axins,
+    )
+    sns.lineplot(
+        x=x_top,
+        y=expected_curve_equal_sized_clusters(int(max(int(c) for c in x_top))),
+        linestyle="-.",
+        color="grey",
+        label="equal-sized clusters",
+    )
+    axins.set_xlabel("number of layers")
+    axins.set_ylabel(r"$A$")
+    axins.set_ylim(0, 1.0)
+    axins.set_aspect(1.0 / axins.get_data_ratio(), adjustable="box")
+
+    ax.legend(
+        (maxim, first, second),
+        ("maximum", "significant", "explained by null model"),
+        loc="center right",
+        fontsize="12",
+    )
     return fig
