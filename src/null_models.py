@@ -50,17 +50,17 @@ def _one_iter(
 
 
 def random_full_alignment_curves(
-    _df: pd.DataFrame,
+    df: pd.DataFrame,
     save_to: str,
     which_score: str = "ami",
     adjusted: bool = False,
     n_tries: int = 10,
 ):
     """
-    Generate 'n_tries' random configurations of the real data in '_df'.
+    Generate 'n_tries' random configurations of the real data in 'df'.
     Each configuration is evaluated and the full alignment curve is dumped
     to the folder 'save_to'
-    :param _df: pd.DataFrame, the original data
+    :param df: pd.DataFrame, the original data
     :param save_to: str, name of the folder
     :param which_score: str, the score to use
         Default: "ami"
@@ -76,7 +76,7 @@ def random_full_alignment_curves(
     with Pool(processes=mp.cpu_count() - 1) as pool:
         result = pool.map_async(
             partial(_one_iter, **{"which_score": which_score, "adjusted": adjusted}),
-            [_df.copy()] * n_tries,
+            [df.copy()] * n_tries,
         )
         i = 0
         for value in result.get():
