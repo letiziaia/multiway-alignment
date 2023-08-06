@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from itertools import combinations
 from functools import partial
+from joblib import dump
 
 from sklearn.metrics.cluster import normalized_mutual_info_score
 from sklearn.metrics import adjusted_mutual_info_score
@@ -81,12 +82,15 @@ def compute_maximal_alignment_curve(
     cluster_labels_df: pd.DataFrame,
     which_score: str = "nmi",
     adjusted: bool = False,
+    dump_to: typing.Optional[str] = None,
 ) -> typing.Tuple:
     """
     :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     :param which_score: str, one of "nmi" or "ami"
     :param adjusted: bool, default: False
+    :param dump_to: Optional[str], filename to save results
+        Default: None
     :return: Tuple[dict[str, tuple[float, list]], dict[int, tuple[float, list, dict]]],
         a tuple of two dictionaries, the first one including all the scores for all the combinations,
         and the second one being the maximal alignment curve.
@@ -151,6 +155,10 @@ def compute_maximal_alignment_curve(
         logger.info(
             f"{length}-combination with highest score {best_nmi}: {best_layers_combination}"
         )
+
+    if dump_to:
+        dump(all_scores_by_combination_size, dump_to + "_all")
+        dump(all_scores_by_combination_size, dump_to + "_best")
 
     return all_scores_by_combination_size, best_by_combination_size
 
