@@ -28,7 +28,7 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
         self.assertDictEqual(
             _resall,
             dict(),
-            f"""compute_maximal_alignment_curve on empty input should return a tuple with two empty dictionaries, 
+            f"""compute_maximal_alignment_curve on empty input should return a tuple with two empty dictionaries,
                     but one was {_resall}""",
         )
         self.assertIsInstance(
@@ -39,7 +39,7 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
         self.assertDictEqual(
             _res0,
             dict(),
-            f"""compute_maximal_alignment_curve on empty input should return a tuple with two empty dictionaries, 
+            f"""compute_maximal_alignment_curve on empty input should return a tuple with two empty dictionaries,
             but one was {_res0}""",
         )
 
