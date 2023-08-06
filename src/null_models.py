@@ -1,12 +1,15 @@
 import pandas as pd
 import numpy as np
 import os
+from scipy.stats import entropy
+from itertools import combinations
 from joblib import dump
 from functools import partial
 import typing
 
 import multiprocessing as mp
 from multiprocessing.pool import Pool
+from tqdm import tqdm
 
 from src.alignment_score import compute_maximal_alignment_curve
 
@@ -87,7 +90,35 @@ def expected_curve(cluster_labels_df: pd.DataFrame) -> typing.List:
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     :return: list of expected scores based on average NMI (normalized by arithmetic average)
     """
-    raise NotImplementedError()
+    _expected_best_scores = []
+    _layers = list(cluster_labels_df.columns)
+
+    _a = cluster_labels_df.copy()
+    _a["count"] = 1
+
+    for length in range(2, len(_layers) + 1):
+        logger.info(f"combinations of size {length}")
+        # Get all combinations of cluster_labels_df.columns of length "length"
+        _columns_combinations = combinations(_layers, length)
+
+        best_score = 0
+
+        for l_comb in tqdm(_columns_combinations):
+            l_mc = []
+            mc_pk = (_a.groupby(list(l_comb))["count"].count() / len(_a)).values
+            h_mc = entropy(mc_pk)
+            for lay in l_comb:
+                l_pk = (_a.groupby(lay)["count"].count() / len(_a)).values
+                _ratio = h_mc / entropy(l_pk)
+                l_mc.append(1 / (1 + _ratio))
+
+            score = sum(l_mc) * 2 / length
+
+            if score > best_score:
+                best_score = score
+
+        _expected_best_scores.append(best_score)
+    return _expected_best_scores
 
 
 def expected_curve_equal_sized_clusters(n_layers: int) -> typing.List:
