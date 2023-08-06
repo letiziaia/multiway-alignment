@@ -3,6 +3,7 @@ import numpy as np
 import os
 from joblib import dump
 from functools import partial
+import typing
 
 import multiprocessing as mp
 from multiprocessing.pool import Pool
@@ -78,3 +79,16 @@ def random_full_alignment_curves(
         for value in result.get():
             dump(value, f"{save_to}/null_{i}")
             i += 1
+
+
+def expected_curve(cluster_labels_df: pd.DataFrame) -> typing.List:
+    """
+    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+        where each element a_ij is an integer representing the cluster labels for node i at layer j
+    :return: list of expected scores based on average NMI (normalized by arithmetic average)
+    """
+    raise NotImplementedError()
+
+
+def expected_curve_equal_sized_clusters(n_layers: int) -> typing.List:
+    return [2 / (1 + k) for k in range(2, n_layers + 1)]
