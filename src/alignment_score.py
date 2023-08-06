@@ -158,7 +158,7 @@ def compute_maximal_alignment_curve(
 
     if dump_to:
         dump(all_scores_by_combination_size, dump_to + "_all")
-        dump(all_scores_by_combination_size, dump_to + "_best")
+        dump(best_by_combination_size, dump_to + "_best")
 
     return all_scores_by_combination_size, best_by_combination_size
 
