@@ -174,18 +174,3 @@ def compute_maximal_alignment_curve(
 #     print(rmi(c1, c2, norm_type="none", logbase=bits))
 #     input()
 #     return max(0, rmi(c1, c2, norm_type="normalized", logbase=bits))
-
-
-def get_null_model(cluster_labels_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
-        where each element a_ij is an integer representing the cluster labels for node i at layer j
-    :return: pd.DataFrame, having one column per layer and one row per node,
-        where each element a_ij is an integer representing the cluster labels for node i at layer j
-    """
-    null = pd.DataFrame()
-    for layer_id in cluster_labels_df.columns:
-        _layer = cluster_labels_df[layer_id].fillna(9).values
-        null[layer_id] = np.random.permutation(_layer)
-
-    return null
