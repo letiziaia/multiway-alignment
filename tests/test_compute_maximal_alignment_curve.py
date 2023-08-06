@@ -19,7 +19,7 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
         compute_maximal_alignment_curve returns a dictionary
         """
         _a = pd.DataFrame()
-        _res0 = compute_maximal_alignment_curve(_a)
+        _, _res0 = compute_maximal_alignment_curve(_a)
         self.assertIsInstance(
             _res0,
             dict,
@@ -36,7 +36,7 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
         compute_maximal_alignment_curve returns a dictionary
         """
         _a = pd.DataFrame({"A": [0, 1, 2]})
-        _res0 = compute_maximal_alignment_curve(_a)
+        _, _res0 = compute_maximal_alignment_curve(_a)
         self.assertIsInstance(
             _res0,
             dict,

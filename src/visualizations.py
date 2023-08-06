@@ -17,7 +17,7 @@ def plot_maximal_alignment_curve(
     :param adjusted: bool, default: False
     :return: plt.Figure with 2 subplots (1 row x 2 columns)
     """
-    res = compute_maximal_alignment_curve(
+    _, res = compute_maximal_alignment_curve(
         cluster_labels_df=cluster_labels_df, which_score=which_score, adjusted=adjusted
     )
     combination_sizes = []

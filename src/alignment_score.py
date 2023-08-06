@@ -7,8 +7,12 @@ from functools import partial
 from sklearn.metrics.cluster import normalized_mutual_info_score
 from sklearn.metrics import adjusted_mutual_info_score
 
+# from clusim.clustering import Clustering
+# from clusim.sim import rmi
+
 import multiprocessing as mp
 from multiprocessing.pool import Pool
+from tqdm import tqdm
 
 from src.mutual_clusters import compute_mutual_clusters
 from src.mutual_clusters import get_mutual_clusters_labels
@@ -37,7 +41,7 @@ def _compute_layer_expectation(
 
 def compute_multilayer_alignment_score(
     cluster_labels_df: pd.DataFrame,
-    mutual_clusters_labels: list,
+    mutual_clusters_labels: typing.List,
     which_score: str = "nmi",
     adjusted: bool = False,
 ) -> float:
@@ -77,22 +81,30 @@ def compute_maximal_alignment_curve(
     cluster_labels_df: pd.DataFrame,
     which_score: str = "nmi",
     adjusted: bool = False,
-) -> dict:
+) -> typing.Tuple:
     """
     :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     :param which_score: str, one of "nmi" or "ami"
     :param adjusted: bool, default: False
-    :return: dict[int, tuple[float, list, dict]], where the key is the size of the combination (int) and the value is a
-        list, where the first element is the highest multilayer alignment score for that size,
+    :return: Tuple[dict[str, tuple[float, list]], dict[int, tuple[float, list, dict]]],
+        a tuple of two dictionaries, the first one including all the scores for all the combinations,
+        and the second one being the maximal alignment curve.
+        In the first dictionary, the key is the size of the combination (int) and
+        the list of layers and the value is a tuple, where the first element is the multilayer alignment score,
+        and the second element is the dictionary of mutual communities for that combination;
+        In the second dictionary, the key is the size of the combination (int) and
+        the value is a list, where the first element is the highest multilayer alignment score for that size,
         the second element is the list of layers that gives the highest alignment score,
         and the last element is the dictionary of mutual communities for that combination
     """
     assert which_score in ("nmi", "ami")
 
     best_by_combination_size = dict()
+    all_scores_by_combination_size = dict()
     _num_of_layers = len(cluster_labels_df.columns)
-    for length in range(1, _num_of_layers + 1):
+    # skipping size 1
+    for length in range(2, _num_of_layers + 1):
         logger.info(f"combinations of size {length}")
         # Get all combinations of cluster_labels_df.columns of length "length"
         _columns_combinations = combinations(cluster_labels_df.columns, length)
@@ -117,6 +129,11 @@ def compute_maximal_alignment_curve(
                 l_comb_df, labels_list, which_score=which_score, adjusted=adjusted
             )
 
+            all_scores_by_combination_size[f"{length}+" + "+".join(sorted(l_comb))] = (
+                nmi,
+                mutual_clusters,
+            )
+
             if nmi > best_nmi:
                 best_nmi = nmi
                 best_layers_combination = l_comb
@@ -132,4 +149,40 @@ def compute_maximal_alignment_curve(
             f"{length}-combination with highest score {best_nmi}: {best_layers_combination}"
         )
 
-    return best_by_combination_size
+    return all_scores_by_combination_size, best_by_combination_size
+
+
+# def reduced_mutual_info_score(labels_true: np.array, labels_pred: np.array, **kwargs) -> float:
+#     """
+#     :param labels_true: np.array of clusters labels
+#     :param labels_pred: np.array of clusters labels
+#     :param kwargs: keywords arguments (placeholder, not used)
+#     :return: float, reduced (normalized) mutual information score
+#     """
+#     # c1 = Clustering(elm2clu_dict={i: [l] for i, l in enumerate(labels_true)})
+#     # c2 = Clustering(elm2clu_dict={i: [l] for i, l in enumerate(labels_pred)})
+#     print(labels_true)
+#     print(labels_pred)
+#     c1 = Clustering().from_membership_list(labels_true)
+#     c2 = Clustering().from_membership_list(labels_pred)
+#     bits = len(np.unique(labels_true))
+#     print(bits)
+#     print(rmi(c1, c2, norm_type="normalized", logbase=bits))
+#     print(rmi(c1, c2, norm_type="none", logbase=bits))
+#     input()
+#     return max(0, rmi(c1, c2, norm_type="normalized", logbase=bits))
+
+
+def get_null_model(cluster_labels_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+        where each element a_ij is an integer representing the cluster labels for node i at layer j
+    :return: pd.DataFrame, having one column per layer and one row per node,
+        where each element a_ij is an integer representing the cluster labels for node i at layer j
+    """
+    null = pd.DataFrame()
+    for layer_id in cluster_labels_df.columns:
+        _layer = cluster_labels_df[layer_id].fillna(9).values
+        null[layer_id] = np.random.permutation(_layer)
+
+    return null

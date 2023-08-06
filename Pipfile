@@ -16,6 +16,10 @@ scikit-learn = "==1.0.2"
 scipy = "*"
 seaborn = "*"
 cython = "*"
+regex = "*"
+clusim = "*"
+numba = "*"
+tqdm = "*"
 
 [dev-packages]
 black = "*"
