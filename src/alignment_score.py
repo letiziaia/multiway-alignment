@@ -115,7 +115,10 @@ def compute_maximal_alignment_curve(
 
         for l_comb in tqdm(_columns_combinations):
             l_comb = list(l_comb)
-            l_comb_df = cluster_labels_df[l_comb]
+            l_comb_df = cluster_labels_df[l_comb].copy()
+            # keep only items that have labels for all items in l_comb and reindex
+            l_comb_df.dropna(inplace=True)
+            l_comb_df.reset_index(drop=True, inplace=True)
             mutual_clusters = compute_mutual_clusters(l_comb_df)
             mutual_clusters_labels = get_mutual_clusters_labels(mutual_clusters)
             labels_list = (
