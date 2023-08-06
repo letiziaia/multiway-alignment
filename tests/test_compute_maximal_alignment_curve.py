@@ -16,31 +16,48 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
 
     def test_on_empty(self):
         """
-        compute_maximal_alignment_curve returns a dictionary
+        compute_maximal_alignment_curve returns a tuple with two dictionaries
         """
         _a = pd.DataFrame()
-        _, _res0 = compute_maximal_alignment_curve(_a)
+        _resall, _res0 = compute_maximal_alignment_curve(_a)
+        self.assertIsInstance(
+            _resall,
+            dict,
+            f"""compute_maximal_alignment_curve should return a tuple with two dictionaries, but one was {type(_resall)}""",
+        )
+        self.assertDictEqual(
+            _resall,
+            dict(),
+            f"""compute_maximal_alignment_curve on empty input should return a tuple with two empty dictionaries, 
+                    but one was {_resall}""",
+        )
         self.assertIsInstance(
             _res0,
             dict,
-            f"""compute_maximal_alignment_curve should return a dictionary, but returned {type(_res0)}""",
+            f"""compute_maximal_alignment_curve should return a tuple with two dictionaries, but one was {type(_res0)}""", 
         )
         self.assertDictEqual(
             _res0,
             dict(),
-            f"""compute_maximal_alignment_curve on empty input should return an empty dictionary, but returned {_res0}""",
+            f"""compute_maximal_alignment_curve on empty input should return a tuple with two empty dictionaries, 
+            but one was {_res0}""",
         )
 
     def test_on_one_layer(self):
         """
-        compute_maximal_alignment_curve returns a dictionary
+        compute_maximal_alignment_curve returns a tuple with two dictionaries
         """
         _a = pd.DataFrame({"A": [0, 1, 2]})
-        _, _res0 = compute_maximal_alignment_curve(_a)
+        _resall, _res0 = compute_maximal_alignment_curve(_a)
+        self.assertIsInstance(
+            _resall,
+            dict,
+            f"""compute_maximal_alignment_curve should return a tuple with two dictionaries, but one was {type(_resall)}""",
+        )
         self.assertIsInstance(
             _res0,
             dict,
-            f"""compute_maximal_alignment_curve should return a dictionary, but returned {type(_res0)}""",
+            f"""compute_maximal_alignment_curve should return a tuple with two dictionaries, but one was {type(_res0)}""", 
         )
 
 
