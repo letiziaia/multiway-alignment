@@ -28,6 +28,7 @@ coverage = "*"
 flake8 = "*"
 notebook = "*"
 pip-audit = ">=2.4.10"
+ruff = "*"
 
 [scripts]
 validate = "bash -c 'python3 -m flake8 && python3 -m pip_audit'"

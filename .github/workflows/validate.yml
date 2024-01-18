@@ -27,7 +27,7 @@ jobs:
       - name: Validate
         run: |
           pipenv run validate
-          pipenv run flake8 . --count --select=E9,E501,F63,F7,F82 --show-source --statistics
+          pipenv run ruff check .
           pipenv run python -m unittest discover
       - name: Generate coverage report
         if: success()

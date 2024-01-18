@@ -112,7 +112,7 @@ def compute_maximal_alignment_curve(
 
         best_layers_combination = None
         best_nmi = 0
-        best_layers_combination_mutual_communities = dict()
+        # best_layers_combination_mutual_communities = dict()
 
         for l_comb in tqdm(_columns_combinations):
             l_comb = list(l_comb)
