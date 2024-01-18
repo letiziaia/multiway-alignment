@@ -24,6 +24,7 @@ wheel = "*"
 
 [dev-packages]
 black = "*"
+coverage = "*"
 flake8 = "*"
 notebook = "*"
 pip-audit = ">=2.4.10"
