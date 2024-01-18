@@ -35,8 +35,10 @@ jobs:
           pipenv run coverage run -m unittest discover
           pipenv run coverage xml
           pipenv run coverage report -m
-      # - name: Upload coverage report to codecov
-      #   uses: codecov/codecov-action@v3
-      #   if: success()
-      #   with:
-      #     file: coverage.xml
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        if: success()
+        with:
+          file: coverage.xml
