@@ -5,25 +5,27 @@ name = "pypi"
 
 [packages]
 click = ">=8.0"
+clusim = "*"
+cython = "*"
 joblib = "~=1.2.0"
 loguru = "~=0.6.0"
 matplotlib = "~=3.6.1"
 networkx = "*"
-notebook = "*"
+numba = "*"
 numpy = "~=1.24.0"
 pandas = "==1.3.5"
 scikit-learn = "==1.0.2"
 scipy = "*"
 seaborn = "*"
-cython = "*"
+setuptools = "*"
 regex = "*"
-clusim = "*"
-numba = "*"
 tqdm = "*"
+wheel = "*"
 
 [dev-packages]
 black = "*"
 flake8 = "*"
+notebook = "*"
 pip-audit = ">=2.4.10"
 
 [scripts]
