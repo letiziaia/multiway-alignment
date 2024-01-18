@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from src.mutual_clusters import get_mutual_clusters_labels
+from multilayer_alignment.mutual_clusters import get_mutual_clusters_labels
 
 
 class TestGetMutualClustersLabels(unittest.TestCase):
