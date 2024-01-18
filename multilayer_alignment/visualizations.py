@@ -8,9 +8,9 @@ import random
 import seaborn as sns
 import typing
 
-from src.alignment_score import compute_maximal_alignment_curve
-from src.null_models import expected_curve_equal_sized_clusters
-from src.common.logging import logger
+from multilayer_alignment.alignment_score import compute_maximal_alignment_curve
+from multilayer_alignment.null_models import expected_curve_equal_sized_clusters
+from multilayer_alignment.utils.logging import logger
 
 
 def plot_maximal_alignment_curve(

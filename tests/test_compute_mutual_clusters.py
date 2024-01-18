@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from src.mutual_clusters import compute_mutual_clusters
+from multilayer_alignment.mutual_clusters import compute_mutual_clusters
 
 
 class TestComputeMutualClusters(unittest.TestCase):

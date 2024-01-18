@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from src.mutual_clusters import compute_mutual_clusters_recursive
+from multilayer_alignment.mutual_clusters import compute_mutual_clusters_recursive
 
 
 class TestComputeMutualClustersRecursive(unittest.TestCase):

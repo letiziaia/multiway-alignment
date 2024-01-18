@@ -8,17 +8,14 @@ from joblib import dump
 from sklearn.metrics.cluster import normalized_mutual_info_score
 from sklearn.metrics import adjusted_mutual_info_score
 
-# from clusim.clustering import Clustering
-# from clusim.sim import rmi
-
 import multiprocessing as mp
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
-from src.mutual_clusters import compute_mutual_clusters
-from src.mutual_clusters import get_mutual_clusters_labels
+from multilayer_alignment.mutual_clusters import compute_mutual_clusters
+from multilayer_alignment.mutual_clusters import get_mutual_clusters_labels
 
-from src.common.logging import logger
+from multilayer_alignment.utils.logging import logger
 
 
 def _compute_layer_expectation(
@@ -115,7 +112,7 @@ def compute_maximal_alignment_curve(
 
         best_layers_combination = None
         best_nmi = 0
-        best_layers_combination_mutual_communities = dict()
+        # best_layers_combination_mutual_communities = dict()
 
         for l_comb in tqdm(_columns_combinations):
             l_comb = list(l_comb)
@@ -136,21 +133,24 @@ def compute_maximal_alignment_curve(
                 l_comb_df, labels_list, which_score=which_score, adjusted=adjusted
             )
 
-            all_scores_by_combination_size[f"{length}+" + "+".join(sorted(l_comb))] = (
-                nmi,
-                mutual_clusters,
-            )
+            all_scores_by_combination_size[
+                f"{length}+" + "+".join(sorted(l_comb))
+            ] = nmi
+            # (
+            # nmi,
+            # mutual_clusters,
+            # )
 
             if nmi > best_nmi:
                 best_nmi = nmi
                 best_layers_combination = l_comb
-                best_layers_combination_mutual_communities = mutual_clusters
+                # best_layers_combination_mutual_communities = mutual_clusters
 
         # RESULTS
         best_by_combination_size[length] = (
             best_nmi,
             best_layers_combination,
-            best_layers_combination_mutual_communities,
+            # best_layers_combination_mutual_communities,
         )
         logger.info(
             f"{length}-combination with highest score {best_nmi}: {best_layers_combination}"

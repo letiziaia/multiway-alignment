@@ -11,9 +11,9 @@ import multiprocessing as mp
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
-from src.alignment_score import compute_maximal_alignment_curve
+from multilayer_alignment.alignment_score import compute_maximal_alignment_curve
 
-from src.common.logging import logger
+from multilayer_alignment.utils.logging import logger
 
 
 def get_null_model(cluster_labels_df: pd.DataFrame) -> pd.DataFrame:
