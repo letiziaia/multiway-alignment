@@ -5,7 +5,6 @@
 This repository contains code to extend pairwise measure of alignment
 to N-wise case.
 
-
 ## Operational tasks
 
 ### Install all dependencies and activate the environment
@@ -24,14 +23,14 @@ From root directory,
 
 ```shell
 $ python -m unittest discover -v
-````
+```
 
 ### Given partitions for each of the layers, compute mutual clusters
 
 ```python
 # import needed modules
 >>> import pandas as pd
->>> from src.mutual_clusters import compute_mutual_clusters_recursive
+>>> from multilayer_alignment.mutual_clusters import compute_mutual_clusters_recursive
 
 # load the partitions labels to a pandas DataFrame
 >>> df = pd.DataFrame(
@@ -59,7 +58,7 @@ Alternatively:
 ```python
 # import needed modules
 >>> import pandas as pd
->>> from src.mutual_clusters import compute_mutual_clusters
+>>> from multilayer_alignment.mutual_clusters import compute_mutual_clusters
 
 # load the partitions labels to a pandas DataFrame
 >>> df = pd.DataFrame(
