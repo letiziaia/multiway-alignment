@@ -5,7 +5,7 @@ from scipy.stats import entropy
 from itertools import combinations
 from joblib import dump
 from functools import partial
-import typing
+from typing import Dict, List
 
 import multiprocessing as mp
 from multiprocessing.pool import Pool
@@ -84,7 +84,7 @@ def random_full_alignment_curves(
             i += 1
 
 
-def expected_curve(cluster_labels_df: pd.DataFrame) -> typing.List:
+def expected_curve(cluster_labels_df: pd.DataFrame) -> List[float]:
     """
     :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
@@ -101,7 +101,7 @@ def expected_curve(cluster_labels_df: pd.DataFrame) -> typing.List:
         # Get all combinations of cluster_labels_df.columns of length "length"
         _columns_combinations = combinations(_layers, length)
 
-        best_score = 0
+        best_score = 0.0
 
         for l_comb in tqdm(_columns_combinations):
             l_mc = []
@@ -121,5 +121,5 @@ def expected_curve(cluster_labels_df: pd.DataFrame) -> typing.List:
     return _expected_best_scores
 
 
-def expected_curve_equal_sized_clusters(n_layers: int) -> typing.List:
+def expected_curve_equal_sized_clusters(n_layers: int) -> List[float]:
     return [2 / (1 + k) for k in range(2, n_layers + 1)]
