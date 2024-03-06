@@ -12,8 +12,8 @@ import multiprocessing as mp
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
-from multilayer_alignment.mutual_clusters import compute_mutual_clusters
-from multilayer_alignment.mutual_clusters import get_mutual_clusters_labels
+from multilayer_alignment.consensus import get_consensus_partition
+from multilayer_alignment.consensus import get_consensus_labels
 
 from multilayer_alignment.utils.logging import logger
 
@@ -59,7 +59,7 @@ def compute_multilayer_alignment_score(
         _score_f = adjusted_mutual_info_score
 
     avg_nmi = 0
-    _expected_nmi = 0
+    _expected_nmi = 0.0
     for layer_id in cluster_labels_df.columns:
         _layer = cluster_labels_df[layer_id].values
         _score = _score_f(_layer, mutual_clusters_labels, average_method="arithmetic")
@@ -120,8 +120,8 @@ def compute_maximal_alignment_curve(
             # keep only items that have labels for all items in l_comb and reindex
             l_comb_df.dropna(inplace=True)
             l_comb_df.reset_index(drop=True, inplace=True)
-            mutual_clusters = compute_mutual_clusters(l_comb_df)
-            mutual_clusters_labels = get_mutual_clusters_labels(mutual_clusters)
+            mutual_clusters = get_consensus_partition(l_comb_df)
+            mutual_clusters_labels = get_consensus_labels(mutual_clusters)
             labels_list = (
                 mutual_clusters_labels.set_index("id")
                 .iloc[l_comb_df.index]["label"]
@@ -133,9 +133,9 @@ def compute_maximal_alignment_curve(
                 l_comb_df, labels_list, which_score=which_score, adjusted=adjusted
             )
 
-            all_scores_by_combination_size[
-                f"{length}+" + "+".join(sorted(l_comb))
-            ] = nmi
+            all_scores_by_combination_size[f"{length}+" + "+".join(sorted(l_comb))] = (
+                nmi
+            )
             # (
             # nmi,
             # mutual_clusters,
