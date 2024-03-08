@@ -86,7 +86,7 @@ def random_full_alignment_curves(
             i += 1
 
 
-def expected_curve(opinions: Union[pd.DataFrame, pd.Series) -> List[float]:
+def expected_curve(opinions: Union[pd.DataFrame, pd.Series]) -> List[float]:
     """
     :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
