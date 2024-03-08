@@ -50,8 +50,8 @@ def get_consensus_partition(
         else:
             _joined_key = [
                 "".join((str(col_name), str(label)))
-                for col_name, label in zip(_topics, key)
-            ]
+                for col_name, label in zip(_topics, key)  # type: ignore
+            ]  # type: ignore
             _formatted_key = "_".join(_joined_key)
         consensus_groups[_formatted_key] = set(value)
     return consensus_groups

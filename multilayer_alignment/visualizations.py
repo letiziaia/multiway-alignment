@@ -1,11 +1,11 @@
 import pandas as pd
 import numpy as np
-from joblib import load
-import matplotlib.pyplot as plt
-import matplotlib.markers as markers
-from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+from joblib import load  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
+import matplotlib.markers as markers  # type: ignore
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes  # type: ignore
 import random
-import seaborn as sns
+import seaborn as sns  # type: ignore
 import typing
 
 from multilayer_alignment.alignment_score import maximal_alignment_curve
@@ -90,7 +90,7 @@ def plot_full_alignment_curve(
         (k.split("+")[0], v[0], k.split("+")[1:]) for k, v in all_results.items()
     ]
     points = pd.DataFrame(_points)
-    top = points.sort_values(by=[1, 0], ascending=False).groupby(0).head(1)
+    top = points.sort_values(by=[1, 0], ascending=False).groupby(0).head(1)  # type: ignore
 
     logger.info(f"Area under the curve: {np.trapz(top[1], dx=1 / (len(top) - 1))}")
 
@@ -113,11 +113,11 @@ def plot_full_alignment_curve(
     # Annotate each point with its label
     for i, label in top[[2]].iterrows():
         label = label[2]
-        text = [lab.replace("_", " ") for lab in label]
-        text = "\n".join(text)
+        _text = [lab.replace("_", " ") for lab in label]
+        text = "\n".join(_text)
         plt.annotate(
             text,
-            (x_top[i], y_top[i]),
+            (x_top[i], y_top[i]),  # type: ignore
             textcoords="offset points",
             xytext=(0, 10),
             ha="left",
@@ -147,23 +147,23 @@ def plot_full_alignment_with_null_models(
     full_result: str, full_null_path: str
 ) -> plt.Figure:
     r = load(full_result)
-    points = [(k.split("+")[0], v[0], k.split("+")[1:]) for k, v in r.items()]
-    points = pd.DataFrame(points)
+    _points = [(k.split("+")[0], v[0], k.split("+")[1:]) for k, v in r.items()]
+    points = pd.DataFrame(_points)
 
-    points_df = []
+    _dfs = []
     for i in range(10):
         r = load(f"{full_null_path}/null_{i}")
         _points = [(k.split("+")[0], v[0], k.split("+")[1:]) for k, v in r.items()]
-        points_df.append(pd.DataFrame(_points))
+        _dfs.append(pd.DataFrame(_points))
 
-    points_df = pd.concat(points_df, ignore_index=True)
+    points_df = pd.concat(_dfs, ignore_index=True)
 
-    top = points.sort_values(by=[1, 0], ascending=False).groupby(0).head(1)
+    top = points.sort_values(by=[1, 0], ascending=False).groupby(0).head(1)  # type: ignore
     x_top = top[0]
-    x_top = [int(v) for v in x_top]
+    x_top = [int(v) for v in x_top]  # type: ignore
     y_top = top[1]
 
-    _strip = points[~points.index.isin(top.index)]
+    _strip = points[~points.index.isin(top.index)]  # type: ignore
 
     null_avg = points_df.groupby(0)[1].mean().to_dict()
     y_top_ = y_top.values - np.array([null_avg[k] for k in null_avg.keys()])
@@ -172,12 +172,12 @@ def plot_full_alignment_with_null_models(
     null_lower_q = points_df.groupby(0)[1].quantile(q=0.025).to_dict()
     sig = [
         (_i, v - null_avg[_i])
-        for _i, v in _strip[[0, 1]].values
+        for _i, v in _strip[[0, 1]].values  # type: ignore
         if v > null_upper_q[_i] or v < null_lower_q[_i]
     ]
     not_sig = [
         (_i, v - null_avg[_i])
-        for _i, v in _strip[[0, 1]].values
+        for _i, v in _strip[[0, 1]].values  # type: ignore
         if null_lower_q[_i] <= v <= null_upper_q[_i]
     ]
 
@@ -191,10 +191,10 @@ def plot_full_alignment_with_null_models(
         alpha=1.0,
     )
     # Annotate each point with its label
-    for j, (i, label) in enumerate(top[[2]].iterrows()):
+    for j, (i, label) in enumerate(top[[2]].iterrows()):  # type: ignore
         label = label[2]
-        text = [lab.replace("_", " ") for lab in label]
-        text = "\n".join(text)
+        _text = [lab.replace("_", " ") for lab in label]
+        text = "\n".join(_text)
         ax.annotate(
             text,
             (x_top[j], y_top_[j]),

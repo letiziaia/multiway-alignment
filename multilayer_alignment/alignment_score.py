@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 from itertools import combinations
 from functools import partial
-from joblib import dump
+from joblib import dump  # type: ignore
 
-from sklearn.metrics.cluster import normalized_mutual_info_score
-from sklearn.metrics import adjusted_mutual_info_score
+from sklearn.metrics.cluster import normalized_mutual_info_score  # type: ignore
+from sklearn.metrics import adjusted_mutual_info_score  # type: ignore
 
 import multiprocessing as mp
 from multiprocessing.pool import Pool
@@ -19,7 +19,7 @@ from multilayer_alignment.utils.logging import logger
 
 
 def _compute_layer_expectation(
-    layer: np.ndarray, scoring_function: typing.Callable
+    layer: typing.Iterable, scoring_function: typing.Callable
 ) -> float:
     """
     :param layer: 1d np.array with clustering assignment
@@ -29,8 +29,8 @@ def _compute_layer_expectation(
     _all_scores = []
     with Pool(processes=mp.cpu_count() - 1) as pool:
         result = pool.map_async(
-            scoring_function, [np.random.permutation(layer) for _ in range(10)]
-        )
+            scoring_function, [np.random.permutation(layer) for _ in range(10)]  # type: ignore
+        )  # type: ignore
         for value in result.get():
             # NOTE: in case of AMI, it is possible to get negative scores,
             # but we cap them to 0 so get only scores >= 0
@@ -115,8 +115,8 @@ def maximal_alignment_curve(
         best_nmi = 0.0
         # best_layers_combination_mutual_communities = dict()
 
-        for l_comb in tqdm(_columns_combinations):
-            l_comb = list(l_comb)
+        for _l_comb in tqdm(_columns_combinations):
+            l_comb = list(_l_comb)
             l_comb_df = opinions[l_comb].copy()
             # keep only items that have labels for all items in l_comb and reindex
             l_comb_df.dropna(inplace=True)
@@ -126,7 +126,7 @@ def maximal_alignment_curve(
             labels_list = (
                 mutual_clusters_labels.set_index("id")
                 .iloc[l_comb_df.index]["label"]
-                .values
+                .to_list()
             )
 
             # CRITERIA

@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 import os
-from scipy.stats import entropy
+from scipy.stats import entropy  # type: ignore
 from itertools import combinations
-from joblib import dump
+from joblib import dump  # type: ignore
 from functools import partial
 from typing import Dict, List, Union
 
@@ -26,7 +26,7 @@ def get_null_model(opinions: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
     null = pd.DataFrame()
     for layer_id in opinions.columns:
         _layer = opinions[layer_id].fillna(9).values
-        null[layer_id] = np.random.permutation(_layer)
+        null[layer_id] = np.random.permutation(_layer)  # type: ignore
 
     return null
 
