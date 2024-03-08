@@ -5,45 +5,47 @@ from scipy.stats import entropy
 from itertools import combinations
 from joblib import dump
 from functools import partial
-from typing import Dict, List
+from typing import Any, Dict, List, Union
 
 import multiprocessing as mp
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
-from multilayer_alignment.alignment_score import compute_maximal_alignment_curve
+from multilayer_alignment.alignment_score import maximal_alignment_curve
 
 from multilayer_alignment.utils.logging import logger
 
 
-def get_null_model(cluster_labels_df: pd.DataFrame) -> pd.DataFrame:
+def get_null_model(opinions: Union[pd.DataFrame, pd.Series[Any]]) -> pd.DataFrame:
     """
-    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+    :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     :return: pd.DataFrame, having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     """
     null = pd.DataFrame()
-    for layer_id in cluster_labels_df.columns:
-        _layer = cluster_labels_df[layer_id].fillna(9).values
+    for layer_id in opinions.columns:
+        _layer = opinions[layer_id].fillna(9).values
         null[layer_id] = np.random.permutation(_layer)
 
     return null
 
 
 def _one_iter(
-    cluster_labels_df: pd.DataFrame, which_score: str = "ami", adjusted: bool = False
-) -> dict:
+    opinions: Union[pd.DataFrame, pd.Series[Any]],
+    which_score: str = "ami",
+    adjusted: bool = False,
+) -> Dict:
     """
-    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+    :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     :param which_score: str
     :param adjusted: bool
     :return: dict
     """
-    null = get_null_model(cluster_labels_df=cluster_labels_df)
+    null = get_null_model(opinions=opinions)
 
-    _full_res, _ = compute_maximal_alignment_curve(
+    _full_res, _ = maximal_alignment_curve(
         null, which_score=which_score, adjusted=adjusted
     )
     return _full_res
@@ -84,21 +86,21 @@ def random_full_alignment_curves(
             i += 1
 
 
-def expected_curve(cluster_labels_df: pd.DataFrame) -> List[float]:
+def expected_curve(opinions: Union[pd.DataFrame, pd.Series[Any]]) -> List[float]:
     """
-    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+    :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     :return: list of expected scores based on average NMI (normalized by arithmetic average)
     """
     _expected_best_scores = []
-    _layers = list(cluster_labels_df.columns)
+    _layers = list(opinions.columns)
 
-    _a = cluster_labels_df.copy()
+    _a = opinions.copy()
     _a["count"] = 1
 
     for length in range(2, len(_layers) + 1):
         logger.info(f"combinations of size {length}")
-        # Get all combinations of cluster_labels_df.columns of length "length"
+        # Get all combinations of opinions.columns of length "length"
         _columns_combinations = combinations(_layers, length)
 
         best_score = 0.0

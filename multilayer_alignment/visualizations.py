@@ -8,26 +8,26 @@ import random
 import seaborn as sns
 import typing
 
-from multilayer_alignment.alignment_score import compute_maximal_alignment_curve
+from multilayer_alignment.alignment_score import maximal_alignment_curve
 from multilayer_alignment.null_models import expected_curve_equal_sized_clusters
 from multilayer_alignment.utils.logging import logger
 
 
 def plot_maximal_alignment_curve(
-    cluster_labels_df: pd.DataFrame,
+    opinions: pd.DataFrame,
     which_score: str = "nmi",
     adjusted: bool = False,
 ) -> plt.Figure:
     """
-    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+    :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
         and column names are layers names
     :param which_score: str, one of "nmi" or "ami"
     :param adjusted: bool, default: False
     :return: plt.Figure with 2 subplots (1 row x 2 columns)
     """
-    _, res = compute_maximal_alignment_curve(
-        cluster_labels_df=cluster_labels_df, which_score=which_score, adjusted=adjusted
+    _, res = maximal_alignment_curve(
+        opinions=opinions, which_score=which_score, adjusted=adjusted
     )
     combination_sizes = []
     anmi_scores = []
@@ -60,13 +60,13 @@ def plot_maximal_alignment_curve(
 
 
 def plot_full_alignment_curve(
-    cluster_labels_df: typing.Optional[pd.DataFrame],
+    opinions: typing.Optional[pd.DataFrame],
     which_score: typing.Optional[str],
     adjusted: typing.Optional[bool],
     full_dump_path: typing.Optional[str],
 ) -> plt.Figure:
     """
-    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+    :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
         and column names are layers names
     :param which_score: str, one of "nmi" or "ami" or None
@@ -78,18 +78,18 @@ def plot_full_alignment_curve(
         all_results = load(full_dump_path)
     else:
         assert (
-            cluster_labels_df is not None
-            and which_score is not None
-            and adjusted is not None
+            opinions is not None and which_score is not None and adjusted is not None
         ), "not enough inputs"
-        all_results, _ = compute_maximal_alignment_curve(
-            cluster_labels_df=cluster_labels_df,
+        all_results, _ = maximal_alignment_curve(
+            opinions=opinions,
             which_score=which_score,
             adjusted=adjusted,
         )
 
-    points = [(k.split("+")[0], v[0], k.split("+")[1:]) for k, v in all_results.items()]
-    points = pd.DataFrame(points)
+    _points = [
+        (k.split("+")[0], v[0], k.split("+")[1:]) for k, v in all_results.items()
+    ]
+    points = pd.DataFrame(_points)
     top = points.sort_values(by=[1, 0], ascending=False).groupby(0).head(1)
 
     logger.info(f"Area under the curve: {np.trapz(top[1], dx=1 / (len(top) - 1))}")

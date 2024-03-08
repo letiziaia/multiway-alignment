@@ -1,8 +1,8 @@
 import pandas as pd
-from typing import Dict
+from typing import Any, Dict, Set, Union
 
 
-def get_consensus_labels(consensus_partition: Dict[str, set]) -> pd.DataFrame:
+def get_consensus_labels(consensus_partition: Dict[str, Set[Any]]) -> pd.DataFrame:
     """
     :param consensus_partition: a dictionary of consensus group label (str) -> consesus group members (set)
     :return: pd.DataFrame with column 'id' for the element id and column 'label' for the element label
@@ -16,7 +16,9 @@ def get_consensus_labels(consensus_partition: Dict[str, set]) -> pd.DataFrame:
     return pd.DataFrame({"id": nodes_id, "label": labels}).sort_values(by="id")
 
 
-def get_consensus_partition(opinions: pd.DataFrame) -> Dict[str, set]:
+def get_consensus_partition(
+    opinions: Union[pd.DataFrame, pd.Series[Any]]
+) -> Dict[str, Set[Any]]:
     """
     Returns the consensus groups (faster)
     :param opinions: pd.DataFrame having one column per topic and one row per individual,
@@ -56,8 +58,10 @@ def get_consensus_partition(opinions: pd.DataFrame) -> Dict[str, set]:
 
 
 def get_consensus_partition_recursive(
-    opinions: pd.DataFrame, consensus_groups: dict = {}, next_topic_idx: int = 0
-) -> Dict[str, set]:
+    opinions: Union[pd.DataFrame, pd.Series[Any]],
+    consensus_groups: Dict[str, Set[Any]] = {},
+    next_topic_idx: int = 0,
+) -> Dict[str, Set[Any]]:
     """
     Recursive function that traverses all the topics and builds the consensus groups
     :param opinions: pd.DataFrame having one column per topic and one row per individual,
