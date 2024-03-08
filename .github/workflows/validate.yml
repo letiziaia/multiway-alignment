@@ -28,7 +28,6 @@ jobs:
           pipenv install --dev
       - name: Validate
         run: |
-          pipenv shell
           pipenv run validate
           pipenv run ruff check .
           pipenv run python -m unittest discover
