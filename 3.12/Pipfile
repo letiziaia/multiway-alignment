@@ -30,7 +30,7 @@ ruff = "*"
 types-tqdm = "*"
 
 [scripts]
-validate = "bash -c 'python3 -m flake8 && python3 -m mypy . && python3 -m pip_audit'"
+validate = "bash -c 'python3 -m flake8 ../ && python3 -m mypy ../ && python3 -m pip_audit'"
 
 [requires]
 python_version = "3.12"
