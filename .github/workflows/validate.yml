@@ -26,7 +26,6 @@ jobs:
           pipenv lock
           pipenv verify
           pipenv install --dev
-          cd ..
       - name: Validate
         run: |
           pipenv run validate
