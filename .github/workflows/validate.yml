@@ -25,10 +25,10 @@ jobs:
           pip install pipenv
           pipenv verify
           pipenv install --dev
-          cd ..
       - name: Validate
         run: |
           pipenv run validate
+          cd ..
           pipenv run ruff check .
           pipenv run python -m unittest discover
       - name: Generate coverage report
