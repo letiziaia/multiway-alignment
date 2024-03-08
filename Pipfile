@@ -24,8 +24,10 @@ coverage = "*"
 flake8 = "*"
 mypy = "*"
 notebook = "*"
+pandas-stubs = "*"
 pip-audit = "*"
 ruff = "*"
+types-tqdm = "*"
 
 [scripts]
 validate = "bash -c 'python3 -m flake8 && python3 -m mypy . && python3 -m pip_audit'"
