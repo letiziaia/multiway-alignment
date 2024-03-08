@@ -39,7 +39,7 @@ def _compute_layer_expectation(
 
 
 def multilayer_alignment_score(
-    opinions: typing.Union[pd.DataFrame, pd.Series[typing.Any]],
+    opinions: typing.Union[pd.DataFrame, pd.Series],
     mutual_clusters_labels: typing.List,
     which_score: str = "nmi",
     adjusted: bool = False,
@@ -77,7 +77,7 @@ def multilayer_alignment_score(
 
 
 def maximal_alignment_curve(
-    opinions: typing.Union[pd.DataFrame, pd.Series[typing.Any]],
+    opinions: typing.Union[pd.DataFrame, pd.Series],
     which_score: str = "nmi",
     adjusted: bool = False,
     dump_to: typing.Optional[str] = None,

@@ -16,7 +16,7 @@ from multilayer_alignment.alignment_score import maximal_alignment_curve
 from multilayer_alignment.utils.logging import logger
 
 
-def get_null_model(opinions: Union[pd.DataFrame, pd.Series[Any]]) -> pd.DataFrame:
+def get_null_model(opinions: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
     """
     :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
@@ -32,7 +32,7 @@ def get_null_model(opinions: Union[pd.DataFrame, pd.Series[Any]]) -> pd.DataFram
 
 
 def _one_iter(
-    opinions: Union[pd.DataFrame, pd.Series[Any]],
+    opinions: Union[pd.DataFrame, pd.Series],
     which_score: str = "ami",
     adjusted: bool = False,
 ) -> Dict:
@@ -86,7 +86,7 @@ def random_full_alignment_curves(
             i += 1
 
 
-def expected_curve(opinions: Union[pd.DataFrame, pd.Series[Any]]) -> List[float]:
+def expected_curve(opinions: Union[pd.DataFrame, pd.Series) -> List[float]:
     """
     :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j

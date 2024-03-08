@@ -17,7 +17,7 @@ def get_consensus_labels(consensus_partition: Dict[str, Set[Any]]) -> pd.DataFra
 
 
 def get_consensus_partition(
-    opinions: Union[pd.DataFrame, pd.Series[Any]]
+    opinions: Union[pd.DataFrame, pd.Series]
 ) -> Dict[str, Set[Any]]:
     """
     Returns the consensus groups (faster)
@@ -58,7 +58,7 @@ def get_consensus_partition(
 
 
 def get_consensus_partition_recursive(
-    opinions: Union[pd.DataFrame, pd.Series[Any]],
+    opinions: Union[pd.DataFrame, pd.Series],
     consensus_groups: Dict[str, Set[Any]] = {},
     next_topic_idx: int = 0,
 ) -> Dict[str, Set[Any]]:
