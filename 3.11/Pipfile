@@ -1,0 +1,36 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+click = "*"
+joblib = "~=1.2.0"
+loguru = "*"
+matplotlib = "~=3.6.1"
+networkx = "*"
+numpy = "*"
+pandas = "==1.3.5"
+scikit-learn = "~=1.4.1"
+scipy = "*"
+seaborn = "*"
+setuptools = "*"
+tqdm = "*"
+wheel = "*"
+
+[dev-packages]
+black = "*"
+coverage = "*"
+flake8 = "*"
+mypy = "*"
+notebook = "*"
+pandas-stubs = "*"
+pip-audit = "*"
+ruff = "*"
+types-tqdm = "*"
+
+[scripts]
+validate = "bash -c 'python3 -m flake8 && python3 -m mypy . && python3 -m pip_audit'"
+
+[requires]
+python_version = "3.11"
