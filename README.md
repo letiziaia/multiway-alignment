@@ -5,15 +5,14 @@
 
 # multilayer-alignment
 
-This repository implements an algorithm for quantifying multilayer alignment.
-You can refer to the [slide deck](https://docs.google.com/presentation/d/1HMEE5kOwwJPLBmAgycKIMSWRx0eCxd3RtSxVR1Jdczw/) for the general idea.
+This repository implements an algorithm for quantifying multilayer alignment or higher-order alignment, that is, the alignment across n different dimensions. You can refer to the [slide deck](https://docs.google.com/presentation/d/1HMEE5kOwwJPLBmAgycKIMSWRx0eCxd3RtSxVR1Jdczw/) for the original idea.
 
 ## Structure of the repo
 
 - `\multilayer_alignment\`: source code
 - `\tests\`: tests for the source code
 
-## Setting up
+## Setting up the development environment
 
 ![python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
 
