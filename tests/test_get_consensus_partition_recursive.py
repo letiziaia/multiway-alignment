@@ -19,7 +19,7 @@ class TestGetConsensusPartitionRecursive(unittest.TestCase):
         get_consensus_partition_recursive returns a dictionary
         """
         _a = pd.DataFrame()
-        _res0 = get_consensus_partition_recursive(cluster_labels_df=_a)
+        _res0 = get_consensus_partition_recursive(opinions=_a)
         self.assertIsInstance(
             _res0,
             dict,
@@ -38,7 +38,7 @@ class TestGetConsensusPartitionRecursive(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [0, 1, 2]})
         _all_nodes = list(_a.index)
-        _res0 = get_consensus_partition_recursive(cluster_labels_df=_a)
+        _res0 = get_consensus_partition_recursive(opinions=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
         _expected0 = {"A0": {0}, "A1": {1}, "A2": {2}}
 
@@ -74,7 +74,7 @@ class TestGetConsensusPartitionRecursive(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [0, 1, 2], "B": [3, 4, 5]})
         _all_nodes = list(_a.index)
-        _res0 = get_consensus_partition_recursive(cluster_labels_df=_a)
+        _res0 = get_consensus_partition_recursive(opinions=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
         _expected0 = {"A0_B3": {0}, "A1_B4": {1}, "A2_B5": {2}}
 
@@ -110,7 +110,7 @@ class TestGetConsensusPartitionRecursive(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [0, 0, 2, 2], "B": [0, 0, 2, 2]})
         _all_nodes = list(_a.index)
-        _res0 = get_consensus_partition_recursive(cluster_labels_df=_a)
+        _res0 = get_consensus_partition_recursive(opinions=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
         _expected0 = {"A0_B0": {0, 1}, "A2_B2": {2, 3}}
 
@@ -146,7 +146,7 @@ class TestGetConsensusPartitionRecursive(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [3, 3, 3, 3], "B": [0, 0, 2, 2]})
         _all_nodes = list(_a.index)
-        _res0 = get_consensus_partition_recursive(cluster_labels_df=_a)
+        _res0 = get_consensus_partition_recursive(opinions=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
         _expected0 = {"A3_B0": {0, 1}, "A3_B2": {2, 3}}
 
@@ -182,7 +182,7 @@ class TestGetConsensusPartitionRecursive(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [0, 0, 2, 2], "B": [0, 0, 2, 2], "C": [0, 0, 2, 2]})
         _all_nodes = list(_a.index)
-        _res0 = get_consensus_partition_recursive(cluster_labels_df=_a)
+        _res0 = get_consensus_partition_recursive(opinions=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
         _expected0 = {"A0_B0_C0": {0, 1}, "A2_B2_C2": {2, 3}}
 
@@ -218,7 +218,7 @@ class TestGetConsensusPartitionRecursive(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [0, 0, 1, 1], "B": [0, 1, 0, 1], "C": [1, 0, 1, 0]})
         _all_nodes = list(_a.index)
-        _res0 = get_consensus_partition_recursive(cluster_labels_df=_a)
+        _res0 = get_consensus_partition_recursive(opinions=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
         _expected0 = {
             "A0_B0_C1": {0},
@@ -259,7 +259,7 @@ class TestGetConsensusPartitionRecursive(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [0, 0, 1, 1], "B": [1, 1, 0, 1], "C": [0, 0, 1, 0]})
         _all_nodes = list(_a.index)
-        _res0 = get_consensus_partition_recursive(cluster_labels_df=_a)
+        _res0 = get_consensus_partition_recursive(opinions=_a)
         _returned_nodes = [n for mc in _res0.values() for n in mc]
         _expected0 = {"A0_B1_C0": {0, 1}, "A1_B0_C1": {2}, "A1_B1_C0": {3}}
 

@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from multilayer_alignment.alignment_score import compute_maximal_alignment_curve
+from multilayer_alignment.alignment_score import maximal_alignment_curve
 
 
 class TestComputeMaximalAlignmentCurve(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
         compute_maximal_alignment_curve returns a tuple with two dictionaries
         """
         _a = pd.DataFrame()
-        _resall, _res0 = compute_maximal_alignment_curve(_a)
+        _resall, _res0 = maximal_alignment_curve(_a)
         self.assertIsInstance(
             _resall,
             dict,
@@ -48,7 +48,7 @@ class TestComputeMaximalAlignmentCurve(unittest.TestCase):
         compute_maximal_alignment_curve returns a tuple with two dictionaries
         """
         _a = pd.DataFrame({"A": [0, 1, 2]})
-        _resall, _res0 = compute_maximal_alignment_curve(_a)
+        _resall, _res0 = maximal_alignment_curve(_a)
         self.assertIsInstance(
             _resall,
             dict,
