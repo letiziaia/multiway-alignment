@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from multilayer_alignment.alignment_score import compute_multilayer_alignment_score
+from multilayer_alignment.alignment_score import multilayer_alignment_score
 
 
 class TestComputeMultilayerAlignmentScore(unittest.TestCase):
@@ -20,7 +20,7 @@ class TestComputeMultilayerAlignmentScore(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [0, 1, 2]})
         _labels = ["a", "b", "c"]
-        _res0 = compute_multilayer_alignment_score(_a, _labels)
+        _res0 = multilayer_alignment_score(_a, _labels)
         self.assertIsInstance(
             _res0,
             float,

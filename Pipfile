@@ -4,21 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-click = ">=8.0"
-clusim = "*"
-cython = "*"
+click = "*"
 joblib = "~=1.2.0"
-loguru = "~=0.6.0"
+loguru = "*"
 matplotlib = "~=3.6.1"
 networkx = "*"
-numba = "*"
-numpy = "~=1.24.0"
+numpy = "*"
 pandas = "==1.3.5"
-scikit-learn = "==1.0.2"
+scikit-learn = "~=1.4.1"
 scipy = "*"
 seaborn = "*"
 setuptools = "*"
-regex = "*"
 tqdm = "*"
 wheel = "*"
 
@@ -26,12 +22,15 @@ wheel = "*"
 black = "*"
 coverage = "*"
 flake8 = "*"
+mypy = "*"
 notebook = "*"
-pip-audit = ">=2.4.10"
+pandas-stubs = "*"
+pip-audit = "*"
 ruff = "*"
+types-tqdm = "*"
 
 [scripts]
-validate = "bash -c 'python3 -m flake8 && python3 -m pip_audit'"
+validate = "bash -c 'python3 -m flake8 && python3 -m mypy . && python3 -m pip_audit'"
 
 [requires]
-python_version = "3.10"
+

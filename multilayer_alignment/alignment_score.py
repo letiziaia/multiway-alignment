@@ -3,23 +3,23 @@ import pandas as pd
 import numpy as np
 from itertools import combinations
 from functools import partial
-from joblib import dump
+from joblib import dump  # type: ignore
 
-from sklearn.metrics.cluster import normalized_mutual_info_score
-from sklearn.metrics import adjusted_mutual_info_score
+from sklearn.metrics.cluster import normalized_mutual_info_score  # type: ignore
+from sklearn.metrics import adjusted_mutual_info_score  # type: ignore
 
 import multiprocessing as mp
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
-from multilayer_alignment.mutual_clusters import compute_mutual_clusters
-from multilayer_alignment.mutual_clusters import get_mutual_clusters_labels
+from multilayer_alignment.consensus import get_consensus_partition
+from multilayer_alignment.consensus import get_consensus_labels
 
 from multilayer_alignment.utils.logging import logger
 
 
 def _compute_layer_expectation(
-    layer: np.array, scoring_function: typing.Callable
+    layer: typing.Iterable, scoring_function: typing.Callable
 ) -> float:
     """
     :param layer: 1d np.array with clustering assignment
@@ -29,22 +29,23 @@ def _compute_layer_expectation(
     _all_scores = []
     with Pool(processes=mp.cpu_count() - 1) as pool:
         result = pool.map_async(
-            scoring_function, [np.random.permutation(layer) for _ in range(10)]
-        )
+            scoring_function, [np.random.permutation(layer) for _ in range(10)]  # type: ignore
+        )  # type: ignore
         for value in result.get():
-            # NOTE: assuming scores are always >=0
+            # NOTE: in case of AMI, it is possible to get negative scores,
+            # but we cap them to 0 so get only scores >= 0
             _all_scores.append(max(value, 0))
     return np.array(_all_scores).mean()
 
 
-def compute_multilayer_alignment_score(
-    cluster_labels_df: pd.DataFrame,
+def multilayer_alignment_score(
+    opinions: typing.Union[pd.DataFrame, pd.Series],
     mutual_clusters_labels: typing.List,
     which_score: str = "nmi",
     adjusted: bool = False,
 ) -> float:
     """
-    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+    :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     :param mutual_clusters_labels: list, a list of labels for mutual clusters
     :param which_score: str, one of "nmi" or "ami"
@@ -59,9 +60,9 @@ def compute_multilayer_alignment_score(
         _score_f = adjusted_mutual_info_score
 
     avg_nmi = 0
-    _expected_nmi = 0
-    for layer_id in cluster_labels_df.columns:
-        _layer = cluster_labels_df[layer_id].values
+    _expected_nmi = 0.0
+    for layer_id in opinions.columns:
+        _layer = opinions[layer_id].values
         _score = _score_f(_layer, mutual_clusters_labels, average_method="arithmetic")
         avg_nmi += _score
 
@@ -72,17 +73,17 @@ def compute_multilayer_alignment_score(
                     _score_f, mutual_clusters_labels, **{"average_method": "arithmetic"}
                 ),
             )
-    return (avg_nmi - _expected_nmi) / len(cluster_labels_df.columns)
+    return (avg_nmi - _expected_nmi) / len(opinions.columns)
 
 
-def compute_maximal_alignment_curve(
-    cluster_labels_df: pd.DataFrame,
+def maximal_alignment_curve(
+    opinions: typing.Union[pd.DataFrame, pd.Series],
     which_score: str = "nmi",
     adjusted: bool = False,
     dump_to: typing.Optional[str] = None,
 ) -> typing.Tuple:
     """
-    :param cluster_labels_df: pd.DataFrame having one column per layer and one row per node,
+    :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
     :param which_score: str, one of "nmi" or "ami"
     :param adjusted: bool, default: False
@@ -103,39 +104,39 @@ def compute_maximal_alignment_curve(
 
     best_by_combination_size = dict()
     all_scores_by_combination_size = dict()
-    _num_of_layers = len(cluster_labels_df.columns)
+    _num_of_layers = len(opinions.columns)
     # skipping size 1
     for length in range(2, _num_of_layers + 1):
         logger.info(f"combinations of size {length}")
-        # Get all combinations of cluster_labels_df.columns of length "length"
-        _columns_combinations = combinations(cluster_labels_df.columns, length)
+        # Get all combinations of opinions.columns of length "length"
+        _columns_combinations = combinations(opinions.columns, length)
 
         best_layers_combination = None
-        best_nmi = 0
+        best_nmi = 0.0
         # best_layers_combination_mutual_communities = dict()
 
-        for l_comb in tqdm(_columns_combinations):
-            l_comb = list(l_comb)
-            l_comb_df = cluster_labels_df[l_comb].copy()
+        for _l_comb in tqdm(_columns_combinations):
+            l_comb = list(_l_comb)
+            l_comb_df = opinions[l_comb].copy()
             # keep only items that have labels for all items in l_comb and reindex
             l_comb_df.dropna(inplace=True)
             l_comb_df.reset_index(drop=True, inplace=True)
-            mutual_clusters = compute_mutual_clusters(l_comb_df)
-            mutual_clusters_labels = get_mutual_clusters_labels(mutual_clusters)
+            mutual_clusters = get_consensus_partition(l_comb_df)
+            mutual_clusters_labels = get_consensus_labels(mutual_clusters)
             labels_list = (
                 mutual_clusters_labels.set_index("id")
                 .iloc[l_comb_df.index]["label"]
-                .values
+                .to_list()
             )
 
             # CRITERIA
-            nmi = compute_multilayer_alignment_score(
+            nmi = multilayer_alignment_score(
                 l_comb_df, labels_list, which_score=which_score, adjusted=adjusted
             )
 
-            all_scores_by_combination_size[
-                f"{length}+" + "+".join(sorted(l_comb))
-            ] = nmi
+            all_scores_by_combination_size[f"{length}+" + "+".join(sorted(l_comb))] = (
+                nmi
+            )
             # (
             # nmi,
             # mutual_clusters,
