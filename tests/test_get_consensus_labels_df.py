@@ -7,7 +7,7 @@ from multilayer_alignment.consensus import _get_consensus_labels_df
 
 class TestGetConsensusLabels(unittest.TestCase):
     """
-    Test functionality of mutual_clusters.get_consensus_labels_df()
+    Test functionality of consensus.get_consensus_labels_df()
     ------------
     Example
     ------------
@@ -18,7 +18,7 @@ class TestGetConsensusLabels(unittest.TestCase):
         """
         _get_consensus_labels_df returns a pd.DataFrame
         """
-        _a = pd.DataFrame()
+        _a = dict()
         _res0 = _get_consensus_labels_df(_a)
         self.assertIsInstance(
             _res0,
