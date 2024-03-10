@@ -12,6 +12,26 @@ This repository implements an algorithm for quantifying multilayer alignment or 
 - `\multilayer_alignment\`: source code
 - `\tests\`: tests for the source code
 
+## Installing the package
+
+### From PIP
+
+This package can be installed directly from the Python Package Index (PyPI) using `pip` from the command-line interface by executing the following command:
+
+```shell
+$ pip install multilayer-alignment
+```
+
+### Build from source
+
+Alternatively, the package can be installed by first cloning the repository containing the source code and then installing the package locally in a chosen directory:
+
+```shell
+$ git clone git@github.com:letiziaia/multilayer-alignment.git
+$ cd multilayer-alignment
+$ pip install .
+```
+
 ## Setting up the development environment
 
 ![python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
