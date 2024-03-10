@@ -49,6 +49,15 @@ class TestGetConsensusLabels(unittest.TestCase):
             f"""_get_consensus_labels_df called on non-empty dictionary should return
             a non-empty pd.DataFrame, but returned {_res0}""",
         )
+        pd.testing.assert_frame_equal(
+            _res0,
+            pd.DataFrame(
+                {
+                    "id": [0, 1, 2, 3],
+                    "label": ["A0_B1_C0", "A0_B1_C0", "A1_B0_C1", "A1_B1_C0"],
+                }
+            ),
+        )
 
 
 if __name__ == "__main__":

@@ -55,6 +55,12 @@ class TestGetConsensusLabels(unittest.TestCase):
             f"""get_consensus_labels called on non-empty pd.DataFrame should return
             a non-empty list, but returned {_res0}""",
         )
+        self.assertListEqual(
+            _res0,
+            ["A0_B1_C1", "A0_B0_C1", "A0_B0_C0", "A1_B1_C0", "A1_B0_C1", "A1_B0_C1"],
+            f"""get_consensus_labels called on non-empty pd.DataFrame should return
+            the correct non-empty list, but returned {_res0}""",
+        )
 
 
 if __name__ == "__main__":
