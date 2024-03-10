@@ -2,12 +2,12 @@ import unittest
 
 import pandas as pd
 
-from multilayer_alignment.alignment_score import maximal_alignment_curve
+from multilayer_alignment.score import maximal_alignment_curve
 
 
 class TestComputeMaximalAlignmentCurve(unittest.TestCase):
     """
-    Test functionality of mutual_clusters.compute_maximal_alignment_curve()
+    Test functionality of score.compute_maximal_alignment_curve()
     ------------
     Example
     ------------

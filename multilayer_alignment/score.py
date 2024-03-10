@@ -12,7 +12,6 @@ import multiprocessing as mp
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
-from multilayer_alignment.consensus import get_consensus_partition
 from multilayer_alignment.consensus import get_consensus_labels
 
 from multilayer_alignment.utils.logging import logger
@@ -121,13 +120,9 @@ def maximal_alignment_curve(
             # keep only items that have labels for all items in l_comb and reindex
             l_comb_df.dropna(inplace=True)
             l_comb_df.reset_index(drop=True, inplace=True)
-            mutual_clusters = get_consensus_partition(l_comb_df)
-            mutual_clusters_labels = get_consensus_labels(mutual_clusters)
-            labels_list = (
-                mutual_clusters_labels.set_index("id")
-                .iloc[l_comb_df.index]["label"]
-                .to_list()
-            )
+
+            # consensus partition labels
+            labels_list = get_consensus_labels(opinions=l_comb_df)
 
             # CRITERIA
             nmi = multilayer_alignment_score(
