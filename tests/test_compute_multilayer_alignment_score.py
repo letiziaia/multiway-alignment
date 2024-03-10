@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from multilayer_alignment.alignment_score import multilayer_alignment_score
+from multilayer_alignment.score import multilayer_alignment_score
 
 
 class TestComputeMultilayerAlignmentScore(unittest.TestCase):

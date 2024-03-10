@@ -25,12 +25,14 @@ From root directory,
 $ python -m unittest discover -v
 ```
 
+## User Guide
+
 ### Given opinion partitions for each of the topics, compute the consensus partition
 
 ```python
-# import needed modules
+# import needed libraries
 >>> import pandas as pd
->>> from multilayer_alignment.consensus import get_consensus_partition
+>>> import multilayer_alignment.consensus as mac
 
 # load the opinion labels to a pandas DataFrame
 >>> df = pd.DataFrame(
@@ -44,21 +46,35 @@ $ python -m unittest discover -v
 )
 
 # get consensus partition
->>> get_consensus_partition(opinions=df)
+>>> mac.get_consensus_partition(opinions=df)
 {
     "A0_B0_C1": {0},
     "A0_B1_C0": {1},
     "A1_B0_C1": {2},
     "A1_B1_C0": {3}
 }
+
+# this function is equivalent, but might be slower
+>>> mac.get_consensus_partition_recursive(opinions=df)
+{
+    "A0_B0_C1": {0},
+    "A0_B1_C0": {1},
+    "A1_B0_C1": {2},
+    "A1_B1_C0": {3}
+}
+
+# get list of labels for the consensus partition
+>>> mac.get_consensus_labels(opinions=df)
+['A0_B0_C1', 'A0_B1_C0', 'A1_B0_C1', 'A1_B1_C0']
 ```
 
-Alternatively:
+### Given opinion partitions for each of the topics, compute the multiway alignment score of all of them
 
 ```python
-# import needed modules
+# import needed libraries
 >>> import pandas as pd
->>> from multilayer_alignment.consensus import get_consensus_partition_recursive
+>>> import multilayer_alignment.consensus as mac
+>>> import multilayer_alignment.score as mas
 
 # load the partitions labels to a pandas DataFrame
 >>> df = pd.DataFrame(
@@ -71,12 +87,27 @@ Alternatively:
     }
 )
 
-# get consensus partition
->>> get_consensus_partition_recursive(opinions=df)
-{
-    "A0_B0_C1": {0},
-    "A0_B1_C0": {1},
-    "A1_B0_C1": {2},
-    "A1_B1_C0": {3}
-}
+# get list of labels for the consensus partition
+>>> partition_labels = mac.get_consensus_labels(opinions=df)
+
+# compute 3-way alignment score using AMI (adjusted mutual info score)
+# and adjust with the null model
+>>> mas.multilayer_alignment_score(
+...     df, partition_labels, which_score="ami", adjusted=True,
+... )
+6.40685300762983e-16
+
+# compute 3-way alignment score using NMI (normalized mutual info score)
+# and adjust with the null model
+>>> mas.multilayer_alignment_score(
+...     df, partition_labels, which_score="nmi", adjusted=True,
+... )
+0.0
+
+# if we use NMI (normalized mutual info score) without adjusting it
+# with a null model, the resulting score is inflated
+>>> mas.multilayer_alignment_score(
+...     df, partition_labels, which_score="nmi", adjusted=False,
+... )
+0.6666666666666666
 ```

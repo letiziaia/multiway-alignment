@@ -8,7 +8,7 @@ import random
 import seaborn as sns  # type: ignore
 import typing
 
-from multilayer_alignment.alignment_score import maximal_alignment_curve
+from multilayer_alignment.score import maximal_alignment_curve  # type: ignore
 from multilayer_alignment.null_models import expected_curve_equal_sized_clusters
 from multilayer_alignment.utils.logging import logger
 

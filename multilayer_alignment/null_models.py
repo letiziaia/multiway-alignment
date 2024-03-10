@@ -11,7 +11,7 @@ import multiprocessing as mp
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
-from multilayer_alignment.alignment_score import maximal_alignment_curve
+from multilayer_alignment.score import maximal_alignment_curve  # type: ignore
 
 from multilayer_alignment.utils.logging import logger
 

@@ -7,7 +7,7 @@ from multilayer_alignment.consensus import get_consensus_labels
 
 class TestGetConsensusLabels(unittest.TestCase):
     """
-    Test functionality of mutual_clusters.get_consensus_labels()
+    Test functionality of consensus.get_consensus_labels()
     ------------
     Example
     ------------
@@ -16,38 +16,50 @@ class TestGetConsensusLabels(unittest.TestCase):
 
     def test_on_empty(self):
         """
-        get_consensus_labels returns a pd.DataFrame
+        get_consensus_labels returns a list
         """
         _a = pd.DataFrame()
         _res0 = get_consensus_labels(_a)
         self.assertIsInstance(
             _res0,
-            pd.DataFrame,
-            f"""get_consensus_labels should return a pd.DataFrame,
+            list,
+            f"""get_consensus_labels should return a list,
             but returned {type(_res0)}""",
         )
         self.assertTrue(
-            _res0.empty,
-            f"""get_consensus_labels called on empty dictionary should return
-            an empty pd.DataFrame, but returned {_res0}""",
+            len(_res0) == 0,
+            f"""get_consensus_labels called on empty pd.DataFrame should return
+            an empty list, but returned {_res0}""",
         )
 
     def test_on_simple_sets(self):
         """
-        get_consensus_labels returns a pd.DataFrame
+        get_consensus_labels returns a list
         """
-        _a = {"A0_B1_C0": {0, 1}, "A1_B0_C1": {2}, "A1_B1_C0": {3}}
+        _a = pd.DataFrame(
+            {
+                "A": [0, 0, 0, 1, 1, 1],
+                "B": [1, 0, 0, 1, 0, 0],
+                "C": [1, 1, 0, 0, 1, 1],
+            }
+        )
         _res0 = get_consensus_labels(_a)
         self.assertIsInstance(
             _res0,
-            pd.DataFrame,
-            f"""get_consensus_labels should return a pd.DataFrame,
+            list,
+            f"""get_consensus_labels should return a list,
             but returned {type(_res0)}""",
         )
         self.assertFalse(
-            _res0.empty,
-            f"""get_consensus_labels called on non-empty dictionary should return
-            a non-empty pd.DataFrame, but returned {_res0}""",
+            len(_res0) == 0,
+            f"""get_consensus_labels called on non-empty pd.DataFrame should return
+            a non-empty list, but returned {_res0}""",
+        )
+        self.assertListEqual(
+            _res0,
+            ["A0_B1_C1", "A0_B0_C1", "A0_B0_C0", "A1_B1_C0", "A1_B0_C1", "A1_B0_C1"],
+            f"""get_consensus_labels called on non-empty pd.DataFrame should return
+            the correct non-empty list, but returned {_res0}""",
         )
 
 

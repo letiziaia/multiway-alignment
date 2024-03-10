@@ -1,8 +1,20 @@
 import pandas as pd
-from typing import Any, Dict, Set, Union
+from typing import Any, Dict, List, Set, Union
 
 
-def get_consensus_labels(consensus_partition: Dict[str, Set[Any]]) -> pd.DataFrame:
+def get_consensus_labels(opinions: Union[pd.DataFrame, pd.Series]) -> List[str]:
+    """
+    :param opinions: pd.DataFrame having one column per topic and one row per individual,
+        where each element a_ij represents the opinion for individual i on topic j
+        and columns names are the topic names
+    :return: List[str], a list of consensus group labels (str)
+    """
+    consensus_dict = get_consensus_partition(opinions=opinions)
+    consensus_df = _get_consensus_labels_df(consensus_partition=consensus_dict)
+    return consensus_df.set_index("id").iloc[opinions.index]["label"].to_list()
+
+
+def _get_consensus_labels_df(consensus_partition: Dict[str, Set[Any]]) -> pd.DataFrame:
     """
     :param consensus_partition: a dictionary of consensus group label (str) -> consesus group members (set)
     :return: pd.DataFrame with column 'id' for the element id and column 'label' for the element label
