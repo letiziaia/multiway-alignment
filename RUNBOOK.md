@@ -32,7 +32,7 @@ $ python -m unittest discover -v
 ```python
 # import needed libraries
 >>> import pandas as pd
->>> import multilayer_alignment.consensus as mac
+>>> import multiway_alignment.consensus as mac
 
 # load the opinion labels to a pandas DataFrame
 >>> df = pd.DataFrame(
@@ -73,8 +73,8 @@ $ python -m unittest discover -v
 ```python
 # import needed libraries
 >>> import pandas as pd
->>> import multilayer_alignment.consensus as mac
->>> import multilayer_alignment.score as mas
+>>> import multiway_alignment.consensus as mac
+>>> import multiway_alignment.score as mas
 
 # load the partitions labels to a pandas DataFrame
 >>> df = pd.DataFrame(
@@ -92,21 +92,21 @@ $ python -m unittest discover -v
 
 # compute 3-way alignment score using AMI (adjusted mutual info score)
 # and adjust with the null model
->>> mas.multilayer_alignment_score(
+>>> mas.multiway_alignment_score(
 ...     df, partition_labels, which_score="ami", adjusted=True,
 ... )
 6.40685300762983e-16
 
 # compute 3-way alignment score using NMI (normalized mutual info score)
 # and adjust with the null model
->>> mas.multilayer_alignment_score(
+>>> mas.multiway_alignment_score(
 ...     df, partition_labels, which_score="nmi", adjusted=True,
 ... )
 0.0
 
 # if we use NMI (normalized mutual info score) without adjusting it
 # with a null model, the resulting score is inflated
->>> mas.multilayer_alignment_score(
+>>> mas.multiway_alignment_score(
 ...     df, partition_labels, which_score="nmi", adjusted=False,
 ... )
 0.6666666666666666

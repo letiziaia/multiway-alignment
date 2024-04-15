@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from multilayer_alignment.consensus import get_consensus_partition_recursive
+from multiway_alignment.consensus import get_consensus_partition_recursive
 
 
 class TestGetConsensusPartitionRecursive(unittest.TestCase):

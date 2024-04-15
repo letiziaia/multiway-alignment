@@ -1,4 +1,4 @@
-name: multilayer-alignment
+name: multiway-alignment
 
 on:
   push:

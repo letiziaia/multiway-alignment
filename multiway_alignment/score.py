@@ -12,9 +12,9 @@ import multiprocessing as mp
 from multiprocessing.pool import Pool
 from tqdm import tqdm
 
-from multilayer_alignment.consensus import get_consensus_labels
+from multiway_alignment.consensus import get_consensus_labels
 
-from multilayer_alignment.utils.logging import logger
+from multiway_alignment.utils.logging import logger
 
 
 def _compute_layer_expectation(
@@ -37,7 +37,7 @@ def _compute_layer_expectation(
     return np.array(_all_scores).mean()
 
 
-def multilayer_alignment_score(
+def multiway_alignment_score(
     opinions: typing.Union[pd.DataFrame, pd.Series],
     mutual_clusters_labels: typing.List,
     which_score: str = "nmi",
@@ -92,10 +92,10 @@ def maximal_alignment_curve(
         a tuple of two dictionaries, the first one including all the scores for all the combinations,
         and the second one being the maximal alignment curve.
         In the first dictionary, the key is the size of the combination (int) and
-        the list of layers and the value is a tuple, where the first element is the multilayer alignment score,
+        the list of layers and the value is a tuple, where the first element is the multiway alignment score,
         and the second element is the dictionary of mutual communities for that combination;
         In the second dictionary, the key is the size of the combination (int) and
-        the value is a list, where the first element is the highest multilayer alignment score for that size,
+        the value is a list, where the first element is the highest multiway alignment score for that size,
         the second element is the list of layers that gives the highest alignment score,
         and the last element is the dictionary of mutual communities for that combination
     """
@@ -125,7 +125,7 @@ def maximal_alignment_curve(
             labels_list = get_consensus_labels(opinions=l_comb_df)
 
             # CRITERIA
-            nmi = multilayer_alignment_score(
+            nmi = multiway_alignment_score(
                 l_comb_df, labels_list, which_score=which_score, adjusted=adjusted
             )
 

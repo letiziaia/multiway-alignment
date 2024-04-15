@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages  # type: ignore
 
 setup(
-    name="multilayer_alignment",
+    name="multiway_alignment",
     version="0.1.0",
     packages=find_packages(),
     author="Letizia Iannucci",
@@ -9,7 +9,7 @@ setup(
     description="Quantifying multiway (higher-order) alignment with mutual information",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/letiziaia/multilayer-alignment",
+    url="https://github.com/letiziaia/multiway-alignment",
     license="Apache 2.0",
     classifiers=[
         "Development Status :: 3 - Alpha",
