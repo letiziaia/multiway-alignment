@@ -1,15 +1,15 @@
-[![multilayer-alignment](https://github.com/letiziaia/multilayer-alignment/actions/workflows/validate.yml/badge.svg)](https://github.com/letiziaia/multilayer-alignment/actions/workflows/validate.yml)
+[![multiway-alignment](https://github.com/letiziaia/multiway-alignment/actions/workflows/validate.yml/badge.svg)](https://github.com/letiziaia/multiway-alignment/actions/workflows/validate.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-3100/)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/letiziaia/multilayer-alignment/blob/main/LICENSE)
-[![codecov](https://codecov.io/gh/letiziaia/multilayer-alignment/graph/badge.svg?token=KSXP8K5A8S)](https://codecov.io/gh/letiziaia/multilayer-alignment)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/letiziaia/multiway-alignment/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/letiziaia/multiway-alignment/graph/badge.svg?token=KSXP8K5A8S)](https://codecov.io/gh/letiziaia/multiway-alignment)
 
-# multilayer-alignment
+# multiway-alignment
 
-This repository implements an algorithm for quantifying multilayer alignment or higher-order alignment, that is, the alignment across n different dimensions. You can refer to the [slide deck](https://docs.google.com/presentation/d/1HMEE5kOwwJPLBmAgycKIMSWRx0eCxd3RtSxVR1Jdczw/) for the original idea.
+This repository implements an algorithm for quantifying multiway alignment or higher-order alignment, that is, the alignment across n different dimensions. You can refer to the [slide deck](https://docs.google.com/presentation/d/1HMEE5kOwwJPLBmAgycKIMSWRx0eCxd3RtSxVR1Jdczw/) for the original idea.
 
 ## Structure of the repo
 
-- `\multilayer_alignment\`: source code
+- `\multiway_alignment\`: source code
 - `\tests\`: tests for the source code
 
 ## Installing the package
@@ -19,7 +19,7 @@ This repository implements an algorithm for quantifying multilayer alignment or 
 This package can be installed directly from the Python Package Index (PyPI) using `pip` from the command-line interface by executing the following command:
 
 ```shell
-$ pip install multilayer-alignment
+$ pip install multiway-alignment
 ```
 
 ### Build from source
@@ -27,8 +27,8 @@ $ pip install multilayer-alignment
 Alternatively, the package can be installed by first cloning the repository containing the source code and then installing the package locally in a chosen directory:
 
 ```shell
-$ git clone git@github.com:letiziaia/multilayer-alignment.git
-$ cd multilayer-alignment
+$ git clone git@github.com:letiziaia/multiway-alignment.git
+$ cd multiway-alignment
 $ pip install .
 ```
 

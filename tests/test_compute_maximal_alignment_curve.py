@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from multilayer_alignment.score import maximal_alignment_curve
+from multiway_alignment.score import maximal_alignment_curve
 
 
 class TestComputeMaximalAlignmentCurve(unittest.TestCase):

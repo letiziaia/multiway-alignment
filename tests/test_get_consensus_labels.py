@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from multilayer_alignment.consensus import get_consensus_labels
+from multiway_alignment.consensus import get_consensus_labels
 
 
 class TestGetConsensusLabels(unittest.TestCase):
