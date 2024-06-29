@@ -31,6 +31,6 @@ ruff = "*"
 types-tqdm = "*"
 
 [scripts]
-validate = "bash -c 'python3 -m ruff check . && python3 -m mypy multiway_alignment && python3 -m pip_audit --ignore-vuln GHSA-jw8x-6495-233v'"
+validate = "bash -c 'python3 -m ruff check . && python3 -m mypy multiway_alignment --exclude data && python3 -m pip_audit --ignore-vuln GHSA-jw8x-6495-233v'"
 
 [requires]
