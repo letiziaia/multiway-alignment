@@ -1,89 +1,50 @@
-
 import pandas as pd
-import networkx as nx
-import typing
 
 
-def load_network(filepath: str) -> pd.DataFrame:
-    layer_name = filepath.split("RICH_")[-1].split(".")[0]
-    all_users = []
-    all_labels = []
-    G = nx.read_graphml(filepath)
-    labels = nx.get_node_attributes(G, "finetuned_cluster")
-    users = nx.get_node_attributes(G, "user_id")
-    for node in list(G.nodes()):
-        all_users.append(users[node])
-        all_labels.append(labels[node])
-    return pd.DataFrame({"users": all_users, f"{layer_name}": all_labels}).set_index(
-        "users"
-    )
+def load_data(year: int) -> pd.DataFrame:
+    """
+    Load the data from the given filepath. The file is assumed to be
+    a csv file with the columns separated by a semicolon, as in Zenodo.
+    See:
+        https://zenodo.org/records/12593833
+    Cite as:
+        Iannucci, L., Faqeeh, A., Salloum, A., Chen, T. H. Y., & Kivelä, M. (2024).
+        Multiway Alignment of Twitter networks from 2019 and 2023 Finnish Parliamentary Elections [Data set].
+        Zenodo. https://doi.org/10.5281/zenodo.12593833
+    :param year: int, the year for the csv file ('finnish_twitter_2019.csv' or 'finnish_twitter_2023.csv')
+    :return: pd.DataFrame
+    """
+    return pd.read_csv(f"finnish_twitter_{year}.csv", sep=";")
 
 
-def get_parties(files_list: typing.List) -> pd.DataFrame:
-    files = [
-        f
-        for f in files_list
-        if "parties" not in f.lower()
-        and "climate" not in f.lower()
-        and "economic" not in f.lower()
-        and "education" not in f.lower()
-        and "immigration" not in f.lower()
-        and "social" not in f.lower()
+def get_parties(year: int) -> pd.DataFrame:
+    """
+    Get the opinion groups for discussions related to parties from the given year
+    :param year: int, the year for the csv file ('finnish_twitter_2019.csv' or 'finnish_twitter_2023.csv')
+    :return: pd.DataFrame
+    """
+    columns = [
+        "CENTER",
+        "FINNS",
+        "GREENS",
+        "LEFT",
+        "NATIONAL",
+        "SDP",
     ]
-    df = pd.DataFrame()
-    for f in files:
-        if df.empty:
-            df = load_network(f)
-        else:
-            df = pd.merge(
-                df, load_network(f), how="outer", left_index=True, right_index=True
-            )
-
-    df = df.reset_index(drop=True)
-    name = [c.split("\\")[-1] for c in df.columns]
-    name = ["_".join(n.split("_")[:-2]) for n in name]
-    df.columns = name  # type: ignore
-    return df
+    return load_data(year=year)[columns]
 
 
-def get_topics(files_list: typing.List) -> pd.DataFrame:
-    files = [
-        f
-        for f in files_list
-        if "climate" in f.lower()
-        or "economic" in f.lower()
-        or "education" in f.lower()
-        or "immigration" in f.lower()
-        or "social" in f.lower()
+def get_topics(year: int) -> pd.DataFrame:
+    """
+    Get the opinion groups for discussions related to topics from the given year
+    :param year: int, the year for the csv file ('finnish_twitter_2019.csv' or 'finnish_twitter_2023.csv')
+    :return: pd.DataFrame
+    """
+    columns = [
+        "CLIMATE",
+        "ECONOMIC_POLICY",
+        "EDUCATION",
+        "IMMIGRATION",
+        "SOCIAL_SECURITY",
     ]
-    df = pd.DataFrame()
-    for f in files:
-        if df.empty:
-            df = load_network(f)
-        else:
-            df = pd.merge(
-                df, load_network(f), how="outer", left_index=True, right_index=True
-            )
-
-    df = df.reset_index(drop=True)
-    name = [c.split("\\")[-1] for c in df.columns]
-    name = ["_".join(n.split("_")[:-2]) for n in name]
-    df.columns = name  # type: ignore
-    return df
-
-
-def get_all(files_list: typing.List) -> pd.DataFrame:
-    df = pd.DataFrame()
-    for f in files_list:
-        if df.empty:
-            df = load_network(f)
-        else:
-            df = pd.merge(
-                df, load_network(f), how="outer", left_index=True, right_index=True
-            )
-
-    df = df.reset_index(drop=True)
-    name = [c.split("\\")[-1] for c in df.columns]
-    name = ["_".join(n.split("_")[:-2]) for n in name]
-    df.columns = name  # type: ignore
-    return df
+    return load_data(year=year)[columns]
