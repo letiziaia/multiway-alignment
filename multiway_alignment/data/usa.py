@@ -260,7 +260,7 @@ def get_opinion_groups(year: int):
     :param: year, int (e.g. 2019)
     :return: None
     """
-    logger.info(f"PERIOD {period}")
+    logger.info(f"PERIOD {year}")
 
     for chamber in ["Senate", "House"]:
         df = get_individual_votes_by_chamber_and_year(

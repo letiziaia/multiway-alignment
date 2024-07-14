@@ -1,5 +1,3 @@
-import multiway_alignment.score as mw_score
-import multiway_alignment.null_models as mw_null
 
 import pandas as pd
 import networkx as nx
