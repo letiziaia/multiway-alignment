@@ -37,7 +37,7 @@ def _layer_expectation(
     return np.array(_all_scores).mean()
 
 
-def multiway_alignment_score_nminusone(
+def multiway_alignment_score(
     opinions: typing.Union[pd.DataFrame, pd.Series],
     which_score: str = "nmi",
     adjusted: bool = False,
@@ -76,7 +76,7 @@ def multiway_alignment_score_nminusone(
     return (avg_nmi - _expected_nmi) / len(opinions.columns)
 
 
-def multiway_alignment_score(
+def multiway_alignment_score_fullpartition(
     opinions: typing.Union[pd.DataFrame, pd.Series],
     mutual_clusters_labels: typing.List,
     which_score: str = "nmi",
@@ -114,7 +114,7 @@ def multiway_alignment_score(
     return (avg_nmi - _expected_nmi) / len(opinions.columns)
 
 
-def maximal_alignment_curve_nminusone(
+def maximal_alignment_curve(
     opinions: typing.Union[pd.DataFrame, pd.Series],
     which_score: str = "nmi",
     adjusted: bool = False,
@@ -161,7 +161,7 @@ def maximal_alignment_curve_nminusone(
             l_comb_df.reset_index(drop=True, inplace=True)
 
             # CRITERIA
-            nmi = multiway_alignment_score_nminusone(
+            nmi = multiway_alignment_score(
                 l_comb_df, which_score=which_score, adjusted=adjusted
             )
 
@@ -189,7 +189,7 @@ def maximal_alignment_curve_nminusone(
     return all_scores_by_combination_size, best_by_combination_size
 
 
-def maximal_alignment_curve(
+def maximal_alignment_curve_fullpartition(
     opinions: typing.Union[pd.DataFrame, pd.Series],
     which_score: str = "nmi",
     adjusted: bool = False,
@@ -239,7 +239,7 @@ def maximal_alignment_curve(
             labels_list = get_consensus_labels(opinions=l_comb_df)
 
             # CRITERIA
-            nmi = multiway_alignment_score(
+            nmi = multiway_alignment_score_fullpartition(
                 l_comb_df, labels_list, which_score=which_score, adjusted=adjusted
             )
 

@@ -94,7 +94,7 @@ def compute_all_alignments(timeseries: pd.DataFrame) -> None:
             .reset_index(drop=True)
         )
         dump_name = f"survey_{year}"
-        full, _ = mw_score.maximal_alignment_curve_nminusone(
+        full, _ = mw_score.maximal_alignment_curve(
             opinions=_df,
             which_score="ami",
             adjusted=False,
@@ -103,7 +103,7 @@ def compute_all_alignments(timeseries: pd.DataFrame) -> None:
         dump(full, dump_name + "_nminus1_ami_full")
 
         print("null model")
-        mw_null.random_full_alignment_curves_kminusone(
+        mw_null.random_full_alignment_curves(
             df=_df,
             save_to=dump_name + "_nminus1_null",
             which_score="ami",
