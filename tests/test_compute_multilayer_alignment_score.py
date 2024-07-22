@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from multiway_alignment.score import multiway_alignment_score
+from multiway_alignment.score import multiway_alignment_score_fullpartition
 
 
 class TestComputeMultiwayAlignmentScore(unittest.TestCase):
@@ -20,7 +20,7 @@ class TestComputeMultiwayAlignmentScore(unittest.TestCase):
         """
         _a = pd.DataFrame({"A": [0, 1, 2]})
         _labels = ["a", "b", "c"]
-        _res0 = multiway_alignment_score(_a, _labels)
+        _res0 = multiway_alignment_score_fullpartition(_a, _labels)
         self.assertIsInstance(
             _res0,
             float,
