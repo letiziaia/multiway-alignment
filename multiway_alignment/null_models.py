@@ -31,6 +31,26 @@ def get_null_model(opinions: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
     return null
 
 
+def _one_iter_fullpartition(
+    opinions: Union[pd.DataFrame, pd.Series],
+    which_score: str = "ami",
+    adjusted: bool = False,
+) -> Dict:
+    """
+    :param opinions: pd.DataFrame having one column per layer and one row per node,
+        where each element a_ij is an integer representing the cluster labels for node i at layer j
+    :param which_score: str
+    :param adjusted: bool
+    :return: dict
+    """
+    null = get_null_model(opinions=opinions)
+
+    _full_res, _ = ma_score.maximal_alignment_curve_fullpartition(
+        null, which_score=which_score, adjusted=adjusted
+    )
+    return _full_res
+
+
 def _one_iter(
     opinions: Union[pd.DataFrame, pd.Series],
     which_score: str = "ami",
@@ -51,24 +71,42 @@ def _one_iter(
     return _full_res
 
 
-def _one_iter_kminusone(
-    opinions: Union[pd.DataFrame, pd.Series],
+def random_full_alignment_curves_fullpartition(
+    df: pd.DataFrame,
+    save_to: str,
     which_score: str = "ami",
     adjusted: bool = False,
-) -> Dict:
+    n_tries: int = 10,
+):
     """
-    :param opinions: pd.DataFrame having one column per layer and one row per node,
-        where each element a_ij is an integer representing the cluster labels for node i at layer j
-    :param which_score: str
+    Generate 'n_tries' random configurations of the real data in 'df'.
+    Each configuration is evaluated and the full alignment curve is dumped
+    to the folder 'save_to'
+    :param df: pd.DataFrame, the original data
+    :param save_to: str, name of the folder
+    :param which_score: str, the score to use
+        Default: "ami"
     :param adjusted: bool
-    :return: dict
+        Default: False
+    :param n_tries: int, name of random configurations to generate
+        Default: 10
+    :return: None
     """
-    null = get_null_model(opinions=opinions)
-
-    _full_res, _ = ma_score.maximal_alignment_curve_nminusone(
-        null, which_score=which_score, adjusted=adjusted
-    )
-    return _full_res
+    if not os.path.exists(save_to):
+        os.makedirs(save_to)
+        logger.info(f"Created new directory {save_to}")
+    with Pool(processes=mp.cpu_count() - 1) as pool:
+        result = pool.map_async(
+            partial(
+                _one_iter_fullpartition,
+                **{"which_score": which_score, "adjusted": adjusted},  # type: ignore
+            ),
+            [df.copy()] * n_tries,
+        )
+        i = 0
+        for value in result.get():
+            dump(value, f"{save_to}/null_{i}")
+            i += 1
 
 
 def random_full_alignment_curves(
@@ -97,44 +135,9 @@ def random_full_alignment_curves(
         logger.info(f"Created new directory {save_to}")
     with Pool(processes=mp.cpu_count() - 1) as pool:
         result = pool.map_async(
-            partial(_one_iter, **{"which_score": which_score, "adjusted": adjusted}),
-            [df.copy()] * n_tries,
-        )
-        i = 0
-        for value in result.get():
-            dump(value, f"{save_to}/null_{i}")
-            i += 1
-
-
-def random_full_alignment_curves_kminusone(
-    df: pd.DataFrame,
-    save_to: str,
-    which_score: str = "ami",
-    adjusted: bool = False,
-    n_tries: int = 10,
-):
-    """
-    Generate 'n_tries' random configurations of the real data in 'df'.
-    Each configuration is evaluated and the full alignment curve is dumped
-    to the folder 'save_to'
-    :param df: pd.DataFrame, the original data
-    :param save_to: str, name of the folder
-    :param which_score: str, the score to use
-        Default: "ami"
-    :param adjusted: bool
-        Default: False
-    :param n_tries: int, name of random configurations to generate
-        Default: 10
-    :return: None
-    """
-    if not os.path.exists(save_to):
-        os.makedirs(save_to)
-        logger.info(f"Created new directory {save_to}")
-    with Pool(processes=mp.cpu_count() - 1) as pool:
-        result = pool.map_async(
             partial(
-                _one_iter_kminusone,
-                **{"which_score": which_score, "adjusted": adjusted},
+                _one_iter,
+                **{"which_score": which_score, "adjusted": adjusted},  # type: ignore
             ),
             [df.copy()] * n_tries,
         )
@@ -144,7 +147,9 @@ def random_full_alignment_curves_kminusone(
             i += 1
 
 
-def expected_curve(opinions: Union[pd.DataFrame, pd.Series]) -> List[float]:
+def expected_curve_fullpartition(
+    opinions: Union[pd.DataFrame, pd.Series]
+) -> List[float]:
     """
     :param opinions: pd.DataFrame having one column per layer and one row per node,
         where each element a_ij is an integer representing the cluster labels for node i at layer j
@@ -181,5 +186,5 @@ def expected_curve(opinions: Union[pd.DataFrame, pd.Series]) -> List[float]:
     return _expected_best_scores
 
 
-def expected_curve_equal_sized_clusters(n_layers: int) -> List[float]:
+def expected_curve_fullpartition_equal_sized_clusters(n_layers: int) -> List[float]:
     return [2 / (1 + k) for k in range(2, n_layers + 1)]

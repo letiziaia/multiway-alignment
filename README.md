@@ -54,4 +54,4 @@ Additional issues can be found by running `python3 -m flake8 .` and `python3 -m 
 
 ## Tests
 
-This code has test coverage for python 3.10, 3.11, and 3.12.
+This code is built and tested for python 3.10, 3.11, and 3.12.
