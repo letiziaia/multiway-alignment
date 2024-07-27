@@ -5,18 +5,18 @@ import pandas as pd
 from multiway_alignment.score import multiway_alignment_score_fullpartition
 
 
-class TestComputeMultiwayAlignmentScore(unittest.TestCase):
+class TestComputeMultiwayAlignmentScoreFull(unittest.TestCase):
     """
-    Test functionality of mutual_clusters.compute_multiway_alignment_score()
+    Test functionality of mutual_clusters.multiway_alignment_score_fullpartition()
     ------------
     Example
     ------------
-    >>> python3 -m unittest -v tests.test_compute_multiway_alignment_score
+    >>> python3 -m unittest -v tests.test_multiway_alignment_score_fullpartition
     """
 
     def test_on_empty(self):
         """
-        compute_multiway_alignment_score returns a float
+        multiway_alignment_score_fullpartition returns a float
         """
         _a = pd.DataFrame({"A": [0, 1, 2]})
         _labels = ["a", "b", "c"]
@@ -24,22 +24,22 @@ class TestComputeMultiwayAlignmentScore(unittest.TestCase):
         self.assertIsInstance(
             _res0,
             float,
-            f"""compute_multiway_alignment_score should return a float, but returned {type(_res0)}""",
+            f"""multiway_alignment_score_fullpartition should return a float, but returned {type(_res0)}""",
         )
         self.assertGreaterEqual(
             _res0,
             0.0,
-            """compute_multiway_alignment_score should return the correct value of avg NMI""",
+            """multiway_alignment_score_fullpartition should return the correct value of avg NMI""",
         )
         self.assertLessEqual(
             _res0,
             1.0,
-            """compute_multiway_alignment_score should return the correct value of avg NMI""",
+            """multiway_alignment_score_fullpartition should return the correct value of avg NMI""",
         )
         self.assertEqual(
             _res0,
             1.0,
-            """compute_multiway_alignment_score should return the correct value of avg NMI""",
+            """multiway_alignment_score_fullpartition should return the correct value of avg NMI""",
         )
 
 
