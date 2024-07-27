@@ -99,7 +99,7 @@ def random_full_alignment_curves_fullpartition(
         result = pool.map_async(
             partial(
                 _one_iter_fullpartition,
-                **{"which_score": which_score, "adjusted": adjusted},
+                **{"which_score": which_score, "adjusted": adjusted},  # type: ignore
             ),
             [df.copy()] * n_tries,
         )
@@ -137,7 +137,7 @@ def random_full_alignment_curves(
         result = pool.map_async(
             partial(
                 _one_iter,
-                **{"which_score": which_score, "adjusted": adjusted},
+                **{"which_score": which_score, "adjusted": adjusted},  # type: ignore
             ),
             [df.copy()] * n_tries,
         )
