@@ -2,10 +2,13 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/letiziaia/multiway-alignment/blob/main/LICENSE)
 [![codecov](https://codecov.io/gh/letiziaia/multiway-alignment/graph/badge.svg?token=KSXP8K5A8S)](https://codecov.io/gh/letiziaia/multiway-alignment)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12593833.svg)](https://doi.org/10.5281/zenodo.12593833)
+[![arXiv](https://img.shields.io/badge/arXiv-2408.00139-b31b1b.svg)](https://arxiv.org/abs/2408.00139)
+
 
 # multiway-alignment
 
-This repository implements an algorithm for quantifying multiway alignment or higher-order alignment, that is, the alignment across n different dimensions. You can refer to the [slide deck](https://docs.google.com/presentation/d/1HMEE5kOwwJPLBmAgycKIMSWRx0eCxd3RtSxVR1Jdczw/) for the original idea.
+This repository implements an algorithm for quantifying multiway alignment or higher-order alignment, that is, the alignment across n different issues or dimensions. You can refer to the [paper](https://arxiv.org/abs/2408.00139) for more details.
 
 ## Structure of the repo
 
