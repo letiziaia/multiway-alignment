@@ -92,7 +92,7 @@ def plot_full_alignment_curve(
     points = pd.DataFrame(_points)
     top = points.sort_values(by=[1, 0], ascending=False).groupby(0).head(1)  # type: ignore
 
-    logger.info(f"Area under the curve: {np.trapz(top[1], dx=1 / (len(top) - 1))}")
+    logger.info(f"Area under the curve: {np.trapezoid(top[1], dx=1 / (len(top) - 1))}")
 
     x = points[~points.index.isin(top.index)][0]
     y = points[~points.index.isin(top.index)][1]
