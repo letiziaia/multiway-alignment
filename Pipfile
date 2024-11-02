@@ -5,13 +5,13 @@ name = "pypi"
 
 [packages]
 click = "*"
-joblib = "~=1.2.0"
-loguru = "*"
+joblib = "~=1.4.2"
+loguru = "~=0.7.2"
 matplotlib = "~=3.6.1"
 networkx = "*"
-numpy = "<2.0.0"
-pandas = "==1.3.5"
-scikit-learn = "~=1.4.1"
+numpy = "~=2.1.1"
+pandas = "~=2.2.3"
+scikit-learn = "~=1.5.2"
 scipy = "*"
 seaborn = "*"
 setuptools = "*"
@@ -31,6 +31,6 @@ ruff = "*"
 types-tqdm = "*"
 
 [scripts]
-validate = "bash -c 'python3 -m ruff check . && python3 -m mypy multiway_alignment --exclude data && python3 -m pip_audit --ignore-vuln GHSA-jw8x-6495-233v'"
+validate = "bash -c 'python3 -m ruff check . && python3 -m mypy multiway_alignment --exclude data && python3 -m pip_audit'"
 
 [requires]

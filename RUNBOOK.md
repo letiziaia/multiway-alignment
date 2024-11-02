@@ -206,3 +206,36 @@ With a growing number of individuals, the effect of alignment arising from rando
 ```
 
 For a random system, multiway alignment score approaches 0.
+
+### Given opinion partitions, compute all the multiway alignment scores
+
+```python
+import multiway_alignment.score as mas
+
+# the following line computes all multiway alignment scores
+# and saves the python objects to joblib files
+mas.maximal_alignment_curve(
+        opinions=dataframe,
+        which_score="ami",
+        adjusted=False,
+        dump_to=”resultfile”,
+    )
+```
+
+To load the maximal alignment curve (considering only the maximum scores):
+
+```python
+r = load("resultfile_best")
+max_scores = [(k, v[0], v[1]) for k, v in r.items()]
+max_scores = pd.DataFrame(max_scores)
+max_scores.columns = ["order", "score", "topics"]
+```
+
+To load the full results:
+
+```python
+r = load("resultfile_all")
+points = [(k.split("+")[0], v, k.split("+")[1:]) for k, v in r.items()]
+points = pd.DataFrame(points)
+points.columns = ["order", "score", "topics"]
+```
