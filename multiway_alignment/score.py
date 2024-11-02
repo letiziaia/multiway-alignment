@@ -28,7 +28,7 @@ def _layer_expectation(
     _all_scores = []
     with Pool(processes=mp.cpu_count() - 1) as pool:
         result = pool.map_async(
-            scoring_function, [np.random.permutation(layer) for _ in range(10)]  # type: ignore
+            scoring_function, [np.random.default_rng(seed=42).permutation(layer) for _ in range(10)]  # type: ignore
         )  # type: ignore
         for value in result.get():
             # NOTE: in case of AMI, it is possible to get negative scores,
@@ -55,6 +55,9 @@ def multiway_alignment_score(
         _score_f = normalized_mutual_info_score
     elif which_score == "ami":
         _score_f = adjusted_mutual_info_score
+
+    if opinions.empty:
+        raise ZeroDivisionError("The dataframe is empty")
 
     avg_nmi = 0
     _expected_nmi = 0.0
@@ -96,6 +99,9 @@ def multiway_alignment_score_fullpartition(
         _score_f = normalized_mutual_info_score
     elif which_score == "ami":
         _score_f = adjusted_mutual_info_score
+
+    if opinions.empty:
+        raise ZeroDivisionError("The dataframe is empty")
 
     avg_nmi = 0
     _expected_nmi = 0.0
