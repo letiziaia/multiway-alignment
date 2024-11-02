@@ -1,6 +1,7 @@
 import unittest
 
 import pandas as pd
+import numpy as np
 
 from multiway_alignment.score import multiway_alignment_score
 
@@ -22,6 +23,23 @@ class TestComputeMultiwayAlignmentScore(unittest.TestCase):
         # the function should raise ZeroDivisionError if the dataframe is empty
         with self.assertRaises(ZeroDivisionError):
             multiway_alignment_score(_a)
+
+    def test_with_nans(self):
+        """
+        multiway_alignment_score returns a float
+        """
+        _a = pd.DataFrame({"A": [0, 1, 2], "B": [0, 1, np.nan], "C": [0, 1, 2]})
+        with self.assertRaises(ValueError):
+            multiway_alignment_score(_a, "nmi", False)
+
+    def test_on_df_without_data(self):
+        """
+        multiway_alignment_score raises ValueError if the dimensions do not match
+        """
+        _a = pd.DataFrame({"A": [], "B": []})
+        # the function should raise ValueError if the dimensions do not match
+        with self.assertRaises(ZeroDivisionError):
+            multiway_alignment_score(_a, "nmi", False)
 
     def test_on_single_dimension(self):
         """
