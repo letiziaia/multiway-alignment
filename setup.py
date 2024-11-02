@@ -2,8 +2,21 @@ from setuptools import setup, find_packages  # type: ignore
 
 setup(
     name="multiway_alignment",
-    version="0.0.1",
+    version="0.0.2",
     packages=find_packages(),
+    install_requires=[
+        "click",
+        "joblib",
+        "loguru",
+        "matplotlib",
+        "networkx",
+        "numpy",
+        "pandas",
+        "scikit-learn",
+        "scipy",
+        "seaborn",
+        "tqdm",
+    ],
     author="Letizia Iannucci",
     author_email="letizia.iannucci@aalto.fi",
     description="Quantifying multiway (higher-order) alignment with mutual information",
@@ -19,5 +32,6 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
     ],
 )
